@@ -91,15 +91,15 @@ export const Home: React.FC = () => {
       <Services />
 
       {/* Why Choose DASI Section */}
-      <section className="py-24 px-6 bg-orange-50">
+      <section className="py-24 px-6" style={{ backgroundColor: 'var(--color-primary-blue)' }}>
         <div className="max-w-7xl mx-auto">
           <div className={`text-center mb-16 transition-all duration-1000 transform ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`} style={{ transitionDelay: '400ms' }}>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Pourquoi choisir DASI ?
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-white/90 max-w-3xl mx-auto">
               Une expertise unique en intelligence spatiale et en valorisation des données
             </p>
           </div>
@@ -112,12 +112,12 @@ export const Home: React.FC = () => {
             ].map((item, index) => (
               <div 
                 key={index} 
-                className={`bg-white rounded-2xl p-8 border border-orange-200 hover:border-orange-500 transition-colors duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl transition-all transition-all duration-1000 transform ${
+                className={`bg-white rounded-lg p-8 border border-white/20 transition-all duration-1000 transform ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                 }`}
                 style={{ transitionDelay: `${500 + index * 100}ms` }}
               >
-                <div className="w-16 h-16 bg-orange-500 rounded-xl flex items-center justify-center mb-6">
+                <div className="w-16 h-16 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'var(--color-primary-blue)' }}>
                   {item.icon === 'arrow-up' && (
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />

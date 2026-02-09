@@ -43,7 +43,7 @@ export const Home: React.FC = () => {
       {/* Statistics Section */}
       <section className="py-24 px-6 bg-orange-400">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { icon: 'clock', number: '5+', text: 'Ans d\'expérience' },
               { icon: 'users', number: '150+', text: 'Projets réalisés' },
@@ -104,7 +104,7 @@ export const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { icon: 'arrow-up', title: 'Expertise Technique', description: 'Notre équipe dispose d\'une expertise approfondie en collecte, analyse et valorisation des données spatiales, avec des années d\'expérience dans le domaine.' },
               { icon: 'heart', title: 'Qualité Premium', description: 'Nous nous engageons à fournir des données de qualité exceptionnelle, rigoureusement vérifiées et conformes aux normes les plus élevées.' },

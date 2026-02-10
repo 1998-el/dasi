@@ -4,8 +4,8 @@ import { Button } from '../ui/Button';
 
 const navItems = [
   { title: 'Accueil', href: '/' },
-  { title: 'Services', href: '#features' },
-  { title: 'Tarifs', href: '#pricing' },
+  { title: 'Services', href: '/services' },
+  { title: 'Tarifs', href: '/pricing' },
   { title: 'À propos', href: '/about' },
   { title: 'Carrières', href: '/careers' },
   { title: 'Contact', href: '#contact' },

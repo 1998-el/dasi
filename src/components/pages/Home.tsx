@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Navbar } from '../layout/Navbar';
 import { Hero } from '../sections/Hero';
 import { Services } from '../sections/Services';
 import { ContactForm } from '../sections/ContactForm';
 
 export const Home: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(true); // Always visible by default
+  const isVisible = true; // Always visible by default
   const homeRef = useRef<HTMLDivElement>(null);
 
   return (

@@ -1,0 +1,334 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search...",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "details": "Details",
+    "status": "Status",
+    "actions": "Actions",
+    "currency": "XAF"
+  },
+  "sidebar": {
+    "menu_principal": "Main Menu",
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "tables": "Tables",
+    "tickets": "Tickets",
+    "resources": "Resource Management",
+    "products": "Products",
+    "suppliers": "Suppliers",
+    "finance_clients": "Finance & Customers",
+    "finance": "Finance",
+    "payments": "Payments",
+    "members": "Members",
+    "analysis_support": "Analysis & Support",
+    "ai_analysis": "AI Analysis",
+    "hr": "HR",
+    "configuration": "Configuration",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Activity overview.",
+    "welcome_morning": "Good morning",
+    "welcome_evening": "Good evening",
+    "occupancy_rate": "Occupancy Rate",
+    "pending_orders": "Pending Orders",
+    "daily_sales": "Daily Revenue",
+    "sales_revenue": "Sales Revenue",
+    "covers_served": "Covers Served",
+    "average_basket": "Average Basket",
+    "low_stock": "Low Stock",
+    "recent_activity": "Recent Activity",
+    "live_status": "Live",
+    "updated_now": "Updated just now",
+    "manage_service": "Manage Service",
+    "performance": "Today's Performance",
+    "revenue_achieved": "Revenue Achieved",
+    "orders_processed": "Orders Processed",
+    "top_products": "Top Products (Sales)",
+    "no_sales": "No sales recorded",
+    "recent_orders": "Latest Orders",
+    "view_all_flux": "View all flow",
+    "order_number": "Order No.",
+    "table": "Table",
+    "customer": "Customer",
+    "amount": "Amount",
+    "time": "Time",
+    "anonymous_customer": "Walk-in Customer",
+    "loading": "Loading dashboard...",
+    "no_data": "No data available",
+    "stats_sub": {
+      "in_room": "in room",
+      "waiting": "waiting",
+      "cash": "register",
+      "daily_sales": "for the day",
+      "weekly_sales": "for the week",
+      "orders": "orders",
+      "period_selection": "Period",
+      "per_order": "per order",
+      "restock": "items to restock"
+    },
+    "trends": {
+      "capacity": "Capacity",
+      "ongoing": "Ongoing",
+      "daily": "Daily",
+      "total": "Total",
+      "average": "Average",
+      "alert": "Alert"
+    },
+    "alerts": {
+      "pending_prep": "{{count}} order waiting for preparation",
+      "pending_prep_plural": "{{count}} orders waiting for preparation",
+      "no_pending": "No pending orders"
+    },
+    "services": {
+      "breakfast": "Breakfast",
+      "lunch": "Lunch Service",
+      "dinner": "Dinner Service",
+      "night": "Night Service"
+    },
+    "weekly": "Weekly"
+  },
+  "orders": {
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "served": "Served",
+      "completed": "Paid",
+      "cancelled": "Cancelled"
+    },
+    "orders_page": {
+      "title": "Order Flow",
+      "subtitle": "Real-time tracking of kitchen and floor service.",
+      "search_placeholder": "Search #ID...",
+      "new_order": "New Order",
+      "order": "Order",
+      "table": "Table",
+      "guests": "Guests",
+      "guests_count": "{{count}} guest",
+      "guests_count_plural": "{{count}} guests",
+      "total": "Total",
+      "preview": "Preview",
+      "items_selected": "{{count}} item selected",
+      "items_selected_plural": "{{count}} items selected",
+      "cancel_order": "Cancel Order",
+      "cancel_confirmation": "Are you sure you want to cancel this order? This action is irreversible and will release stock.",
+      "add_modal": {
+        "assignment": "Assignment",
+        "table_placeholder": "Table?",
+        "pers": "Guests",
+        "cart": "Cart",
+        "empty_cart": "Cart is empty",
+        "subtotal": "Subtotal",
+        "tax": "Tax (19.25%)",
+        "total_retail": "Total to pay",
+        "total_ttc": "Total (incl. tax)",
+        "apply_tax_toggle": "Apply Tax (19.25%)",
+        "special_instructions": "Special instructions...",
+        "send_to_kitchen": "Send to Kitchen",
+        "update_order": "Update Order",
+        "serve_now": "Serve directly",
+        "search_product_placeholder": "Search dish, beverage..."
+      },
+      "detail_drawer": {
+        "title": "Order Details",
+        "assigned_to": "Assigned to",
+        "ordered_items": "Ordered Items",
+        "special_instructions": "Special Instructions",
+        "no_instructions": "No specific instructions for this order.",
+        "timeline": "Timeline",
+        "order_created": "Order created",
+        "no_date": "Date not available",
+        "subtotal": "Subtotal",
+        "total_to_pay": "Total to pay"
+      },
+      "categories": {
+        "ALL": "All",
+        "STARTER": "Starters",
+        "MAIN_COURSE": "Main Courses",
+        "DESSERT": "Desserts",
+        "BEVERAGE": "Beverages",
+        "SIDE": "Sides",
+        "OTHER": "Others"
+      },
+      "actions_labels": {
+        "validate": "Validate",
+        "prepare": "Kitchen",
+        "ready": "Ready",
+        "serve": "Serve",
+        "bill": "Bill"
+      },
+      "notifications": {
+        "items_added": "Items added to Table {{number}}",
+        "order_sent": "Order sent to kitchen",
+        "invoice_generated": "Invoice generated successfully",
+        "order_updated": "Order updated",
+        "order_cancelled": "Order cancelled"
+      }
+    }
+  },
+  "hr": {
+    "title": "Human Resources",
+    "tabs": {
+      "overview": "Overview",
+      "employees": "Employees",
+      "attendance": "Attendance",
+      "leave": "Leave",
+      "planning": "Planning",
+      "payroll": "Payroll",
+      "analytics": "Analytics",
+      "settings": "Settings"
+    },
+    "employees": {
+      "new_profile": "New Profile",
+      "hire_date": "Hire Date",
+      "base_salary": "Base Salary",
+      "contract_type": "Contract Type"
+    },
+    "attendance": {
+      "check_in": "Check In",
+      "check_out": "Check Out",
+      "recorded_by": "Recorded by"
+    }
+  },
+  "finance": {
+    "title": "Financial Management",
+    "tabs": {
+      "expenses": "Expenses Flow",
+      "budgets": "Budgets",
+      "analytics": "Analytics"
+    },
+    "budgets": {
+      "new_budget": "New Budget",
+      "allocated": "Allocated",
+      "spent": "Spent",
+      "remaining": "Remaining"
+    },
+    "expenses": {
+      "new_expense": "New Expense",
+      "approve": "Approve",
+      "pending": "Pending"
+    }
+  },
+  "settings": {
+    "title": "System Configuration",
+    "tabs": {
+      "general": "Establishment",
+      "restaurant": "Restaurant",
+      "retail": "Retail Store",
+      "pharmacy": "Pharmacy",
+      "hr": "Human Resources",
+      "notifications": "Notifications"
+    },
+    "general": {
+      "name": "Brand Name",
+      "tax_rate": "Tax Rate (%)",
+      "currency": "Currency"
+    },
+    "restaurant": {
+      "opening": "Opening",
+      "closing": "Closing"
+    },
+    "roles": {
+      "admin": "Administrator",
+      "manager": "Manager",
+      "waiter": "Waiter",
+      "kitchen": "Kitchen",
+      "staff": "Staff"
+    }
+  },
+  "orders_page": {
+    "title": "Order Flow",
+    "subtitle": "Real-time tracking of kitchen and floor service.",
+    "search_placeholder": "Search #ID...",
+    "new_order": "New Order",
+    "order": "Order",
+    "table": "Table",
+    "guests": "Guests",
+    "guests_count": "{{count}} guest",
+    "guests_count_plural": "{{count}} guests",
+    "total": "Total",
+    "preview": "Preview",
+    "items_selected": "{{count}} item selected",
+    "items_selected_plural": "{{count}} items selected",
+    "cancel_order": "Cancel Order",
+    "cancel_confirmation": "Are you sure you want to cancel this order? This action is irreversible and will release stock.",
+    "add_modal": {
+      "assignment": "Assignment",
+      "table_placeholder": "Table?",
+      "pers": "Guests",
+      "cart": "Cart",
+      "empty_cart": "Cart is empty",
+      "subtotal": "Subtotal",
+      "tax": "Tax (19.25%)",
+        "total_retail": "Total to pay",
+        "apply_tax_toggle": "Apply Tax (19.25%)",
+      "special_instructions": "Special instructions...",
+      "send_to_kitchen": "Send to Kitchen",
+      "update_order": "Update Order",
+      "serve_now": "Serve directly",
+      "search_product_placeholder": "Search dish, beverage..."
+    },
+    "detail_drawer": {
+      "title": "Order Details",
+      "assigned_to": "Assigned to",
+      "ordered_items": "Ordered Items",
+      "special_instructions": "Special Instructions",
+      "no_instructions": "No specific instructions for this order.",
+      "timeline": "Timeline",
+      "order_created": "Order created",
+      "no_date": "Date not available",
+      "subtotal": "Subtotal",
+      "total_to_pay": "Total to pay"
+    },
+    "categories": {
+      "ALL": "All",
+      "STARTER": "Starters",
+      "MAIN_COURSE": "Main Courses",
+      "DESSERT": "Desserts",
+      "BEVERAGE": "Beverages",
+      "SIDE": "Sides",
+      "OTHER": "Others"
+    },
+    "actions_labels": {
+      "validate": "Validate",
+      "prepare": "Kitchen",
+      "ready": "Ready",
+      "serve": "Serve",
+      "bill": "Bill"
+    },
+    "notifications": {
+      "items_added": "Items added to Table {{number}}",
+      "order_sent": "Order sent to kitchen",
+      "invoice_generated": "Invoice generated successfully",
+      "order_updated": "Order updated",
+      "order_cancelled": "Order cancelled"
+    }
+  },
+  "client_menu": {
+    "welcome": "Welcome to",
+    "subtitle": "Browse our menu and order in one click.",
+    "your_table": "Your Table",
+    "add_to_cart": "Add",
+    "item_added": "Added to cart",
+    "view_cart": "View Order",
+    "cart_title": "Your Selection",
+    "empty_cart": "Your cart is empty.",
+    "confirm_order": "Place Order",
+    "order_success": "Order sent!",
+    "order_success_desc": "Your items are arriving soon at your table.",
+    "total": "Total to pay",
+    "print_ticket": "Print my ticket",
+    "downloading_ticket": "Generating ticket..."
+  }
+}

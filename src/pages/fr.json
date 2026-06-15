@@ -1,0 +1,419 @@
+{
+  "common": {
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "search": "Rechercher...",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "success": "Opération réussie",
+    "details": "Détails",
+    "status": "Statut",
+    "actions": "Actions",
+    "currency": "FCFA",
+    "notes": "Notes de service"
+  },
+  "sidebar": {
+    "menu_principal": "Menu Principal",
+    "dashboard": "Tableau de bord",
+    "orders": "Commandes",
+    "tables": "Tables",
+    "tickets": "Tickets",
+    "resources": "Gestion des Ressources",
+    "products": "Produits",
+    "suppliers": "Fournisseurs",
+    "finance_clients": "Finances & Clients",
+    "finance": "Finance",
+    "payments": "Paiements",
+    "inventory": "Inventaire",
+    "members": "Membres",
+    "accounting": "Comptabilité",
+    "cash_closing": "Clôture de caisse",
+    "analysis_support": "Analyse & Support",
+    "ai_analysis": "AI Analyse",
+    "hr": "RH",
+    "configuration": "Configuration",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "subtitle": "Vue d'ensemble de l'activité.",
+    "welcome_morning": "Bonjour",
+    "welcome_evening": "Bonsoir",
+    "occupancy_rate": "Taux d'occupation",
+    "pending_orders": "Commandes en cours",
+    "daily_sales": "Chiffre d'affaires (Jour)",
+    "sales_revenue": "Chiffre d'affaires",
+    "covers_served": "Couverts servis",
+    "average_basket": "Panier moyen",
+    "low_stock": "Stock bas",
+    "recent_activity": "Activité Récente",
+    "live_status": "En direct",
+    "updated_now": "Mis à jour à l'instant",
+    "manage_service": "Gérer le service",
+    "performance": "Performance du jour",
+    "revenue_achieved": "CA réalisé",
+    "orders_processed": "Commandes traitées",
+    "top_products": "Top produits (Ventes)",
+    "no_sales": "Aucune vente enregistrée",
+    "recent_orders": "Dernières commandes",
+    "view_all_flux": "Voir tout le flux",
+    "order_number": "N° Commande",
+    "table": "Table",
+    "customer": "Client",
+    "amount": "Montant",
+    "time": "Heure",
+    "anonymous_customer": "Client Passage",
+    "loading": "Chargement du tableau de bord...",
+    "no_data": "Aucune donnée disponible",
+    "stats_sub": {
+      "in_room": "en salle",
+      "waiting": "en attente",
+      "cash": "caisse",
+      "daily_sales": "du jour",
+      "weekly_sales": "de la semaine",
+      "orders": "commandes",
+      "period_selection": "Période",
+      "per_order": "par commande",
+      "restock": "articles à réapprovisionner"
+    },
+    "trends": {
+      "capacity": "Capacité",
+      "ongoing": "En cours",
+      "daily": "Journalier",
+      "total": "Total",
+      "average": "Moyenne",
+      "alert": "Alerte"
+    },
+    "alerts": {
+      "pending_prep": "{{count}} commande en attente de préparation",
+      "pending_prep_plural": "{{count}} commandes en attente de préparation",
+      "no_pending": "Aucune commande en attente"
+    },
+    "services": {
+      "breakfast": "Petit Déjeuner",
+      "lunch": "Service du Midi",
+      "dinner": "Service du Soir",
+      "night": "Service de Nuit"
+    },
+    "weekly": "Semaine"
+  },
+  "orders": {
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmée",
+      "preparing": "En cuisine",
+      "ready": "Prête",
+      "served": "Servie",
+      "completed": "Payée",
+      "cancelled": "Annulée"
+    },
+    "orders_page": {
+      "title": "Flux Commandes",
+      "subtitle": "Suivi en temps réel de la cuisine et du service en salle.",
+      "search_placeholder": "Rechercher #ID...",
+      "new_order": "Nouvelle Vente",
+      "order": "Commande",
+      "table": "Table",
+      "guests": "Couverts",
+      "guests_count": "{{count}} pers.",
+      "guests_count_plural": "{{count}} pers.",
+      "total": "Total",
+      "preview": "Aperçu",
+      "items_selected": "{{count}} article sélectionné",
+      "items_selected_plural": "{{count}} articles sélectionnés",
+      "cancel_order": "Annuler la commande",
+      "cancel_confirmation": "Voulez-vous vraiment annuler cette commande ? Cette action est irréversible et libérera les stocks.",
+      "add_modal": {
+        "assignment": "Assignation",
+        "table_placeholder": "Table ?",
+        "customer_placeholder": "Nom du client / patient...",
+        "pers": "Pers.",
+        "cart": "Panier",
+        "empty_cart": "Le panier est vide",
+        "subtotal": "Sous-total HT",
+        "tax": "TVA (19.25%)",
+        "total_retail": "Total à payer",
+        "total_ttc": "Total TTC",
+        "apply_tax_toggle": "Appliquer TVA (19.25%)",
+        "special_instructions": "Notes spéciales...",
+        "send_to_kitchen": "Envoyer en cuisine",
+        "update_order": "Mettre à jour la commande",
+        "serve_now": "Servir directement",
+        "search_product_placeholder": "Chercher un plat, une boisson..."
+      },
+      "detail_drawer": {
+        "title": "Détails Commande",
+        "assigned_to": "Assigné à",
+        "ordered_items": "Articles commandés",
+        "special_instructions": "Instructions spéciales",
+        "no_instructions": "Aucune instruction particulière pour cette commande.",
+        "timeline": "Chronologie",
+        "order_created": "Commande créée",
+        "no_date": "Date non disponible",
+        "subtotal": "Sous-total",
+        "total_to_pay": "Total à régler"
+      },
+      "categories": {
+        "ALL": "Tout",
+        "STARTER": "Entrées",
+        "MAIN_COURSE": "Plats",
+        "DESSERT": "Desserts",
+        "BEVERAGE": "Boissons",
+        "SIDE": "Accompagnements",
+        "OTHER": "Autres"
+      },
+      "actions_labels": {
+        "validate": "Valider",
+        "prepare": "Cuisine",
+        "ready": "Prêt",
+        "serve": "Servir",
+        "bill": "Facturer"
+      },
+      "notifications": {
+        "items_added": "Articles ajoutés à la Table {{number}}",
+        "order_sent": "Commande envoyée en cuisine",
+        "invoice_generated": "Facture générée avec succès",
+        "order_updated": "Commande mise à jour",
+        "order_cancelled": "Commande annulée"
+      }
+    }
+  },
+  "hr": {
+    "title": "Ressources Humaines",
+    "tabs": {
+      "overview": "Synthèse",
+      "employees": "Employés",
+      "attendance": "Pointage",
+      "leave": "Congés",
+      "planning": "Planning",
+      "payroll": "Paie",
+      "analytics": "Analyses",
+      "settings": "Réglages"
+    },
+    "employees": {
+      "new_profile": "Nouveau Profil",
+      "hire_date": "Date d'embauche",
+      "base_salary": "Salaire de base",
+      "contract_type": "Type de contrat"
+    },
+    "attendance": {
+      "check_in": "Pointage Entrée",
+      "check_out": "Pointage Sortie",
+      "recorded_by": "Enregistré par"
+    }
+  },
+  "finance": {
+    "title": "Gestion Financière",
+    "tabs": {
+      "expenses": "Flux Dépenses",
+      "budgets": "Budgets",
+      "analytics": "Analyses"
+    },
+    "budgets": {
+      "new_budget": "Nouveau Budget",
+      "allocated": "Alloué",
+      "spent": "Consommé",
+      "remaining": "Reste"
+    },
+    "expenses": {
+      "new_expense": "Nouvelle Dépense",
+      "approve": "Approuver",
+      "pending": "En attente"
+    }
+  },
+  "settings": {
+    "title": "Configuration Système",
+    "tabs": {
+      "general": "Établissement",
+      "restaurant": "Restaurant",
+      "retail": "Boutique",
+      "pharmacy": "Officine",
+      "hr": "Ressources Humaines",
+      "notifications": "Notifications"
+    },
+    "onboarding": {
+      "business_type": "Type d'activité",
+      "type_restaurant": "Restaurant / Café / Bar",
+      "type_retail": "Boutique / Commerce / Magasin",
+      "type_pharmacy": "Pharmacie / Officine"
+    },
+    "general": {
+      "name": "Nom de l'enseigne",
+      "tax_rate": "Taux TVA (%)",
+      "currency": "Devise"
+    },
+    "restaurant": {
+      "opening": "Ouverture",
+      "closing": "Fermeture"
+    },
+    "roles": {
+      "admin": "Administrateur",
+      "manager": "Gestionnaire",
+      "waiter": "Serveur",
+      "kitchen": "Cuisine",
+      "staff": "Personnel"
+    }
+  },
+  "orders_page": {
+    "title": "Flux Commandes",
+    "subtitle": "Suivi en temps réel de la cuisine et du service en salle.",
+    "search_placeholder": "Rechercher #ID...",
+    "new_order": "Nouvelle Commande",
+    "order": "Commande",
+    "table": "Table",
+    "guests": "Couverts",
+    "guests_count": "{{count}} pers.",
+    "guests_count_plural": "{{count}} pers.",
+    "total": "Total",
+    "preview": "Aperçu",
+    "items_selected": "{{count}} article sélectionné",
+    "items_selected_plural": "{{count}} articles sélectionnés",
+    "cancel_order": "Annuler la commande",
+    "cancel_confirmation": "Voulez-vous vraiment annuler cette commande ? Cette action est irréversible et libérera les stocks.",
+    "add_modal": {
+      "assignment": "Assignation",
+      "table_placeholder": "Table ?",
+      "pers": "Pers.",
+      "cart": "Panier",
+      "empty_cart": "Le panier est vide",
+      "subtotal": "Sous-total HT",
+      "tax": "TVA (19.25%)",
+      "total_ttc": "Total TTC",
+      "special_instructions": "Notes spéciales...",
+      "send_to_kitchen": "Envoyer en cuisine",
+      "update_order": "Mettre à jour la commande",
+      "serve_now": "Servir directement",
+      "search_product_placeholder": "Chercher un plat, une boisson..."
+    },
+    "detail_drawer": {
+      "title": "Détails Commande",
+      "assigned_to": "Assigné à",
+      "ordered_items": "Articles commandés",
+      "special_instructions": "Instructions spéciales",
+      "no_instructions": "Aucune instruction particulière pour cette commande.",
+      "timeline": "Chronologie",
+      "order_created": "Commande créée",
+      "no_date": "Date non disponible",
+      "subtotal": "Sous-total",
+      "total_to_pay": "Total à régler"
+    },
+    "categories": {
+      "ALL": "Tout",
+      "STARTER": "Entrées",
+      "MAIN_COURSE": "Plats",
+      "DESSERT": "Desserts",
+      "BEVERAGE": "Boissons",
+      "SIDE": "Accompagnements",
+      "OTHER": "Autres"
+    },
+    "actions_labels": {
+      "validate": "Valider",
+      "prepare": "Cuisine",
+      "ready": "Prêt",
+      "serve": "Servir",
+      "bill": "Facturer"
+    },
+    "notifications": {
+      "items_added": "Articles ajoutés à la Table {{number}}",
+      "order_sent": "Commande envoyée en cuisine",
+      "invoice_generated": "Facture générée avec succès",
+      "order_updated": "Commande mise à jour",
+      "order_cancelled": "Commande annulée"
+    }
+  },
+  "client_menu": {
+    "welcome": "Bienvenue chez",
+    "subtitle": "Parcourez notre carte et commandez en un clic.",
+    "your_table": "Votre Table",
+    "add_to_cart": "Ajouter",
+    "item_added": "Ajouté au panier",
+    "view_cart": "Voir la commande",
+    "cart_title": "Votre Sélection",
+    "empty_cart": "Votre panier est vide.",
+    "confirm_order": "Passer la commande",
+    "order_success": "Commande envoyée !",
+    "order_success_desc": "Vos articles arrivent bientôt à votre table.",
+    "total": "Total à régler",
+    "print_ticket": "Imprimer mon ticket",
+    "downloading_ticket": "Génération du ticket..."
+  },
+  "suppliers_page": {
+    "title": "Gestion des Fournisseurs",
+    "subtitle": "Gérez vos relations avec les prestataires et fournisseurs de matières premières.",
+    "add_supplier": "Ajouter un Fournisseur",
+    "search_placeholder": "Rechercher un fournisseur...",
+    "name": "Nom",
+    "contact": "Nom du contact",
+    "phone": "Téléphone",
+    "email": "Email",
+    "category": "Catégorie",
+    "address": "Adresse",
+    "last_delivery": "Dernière livraison",
+    "status": "Statut",
+    "actions": "Actions"
+  },
+  "inventory_page": {
+    "title": "Gestion des Stocks",
+    "subtitle": "Suivi des niveaux de stock et alertes de réapprovisionnement.",
+    "search_placeholder": "Rechercher un article...",
+    "product": "Produit",
+    "sku": "SKU",
+    "current_stock": "Stock Actuel",
+    "threshold": "Seuil d'alerte",
+    "unit": "Unité",
+    "status": "État",
+    "adjust_stock": "Ajuster le stock",
+    "low_stock_alert": "Stock faible",
+    "out_of_stock": "Rupture de stock",
+    "in_stock": "En stock",
+    "history": "Historique des mouvements",
+    "narcotic_badge": "Stupéfiant",
+    "movement_in": "Entrée (Stock)",
+    "movement_out": "Sortie (Vente)",
+    "movement_adj": "Ajustement",
+    "reason_sale": "Vente",
+    "reason_adjustment": "Ajustement manuel",
+    "reason_restock": "Réapprovisionnement",
+    "reason_damage": "Casse / Perte",
+    "reason_inventory": "Inventaire physique",
+    "history_drawer_title": "Historique des mouvements",
+    "history_drawer_subtitle": "Traçabilité complète du stock",
+    "no_movements": "Aucun mouvement de stock enregistré.",
+    "movement_type": "Type",
+    "movement_quantity": "Quantité",
+    "movement_before_stock": "Avant",
+    "movement_after_stock": "Après",
+    "movement_reason": "Raison",
+    "movement_date": "Date",
+    "movement_by": "Par"
+  }
+  ,
+  "accounting": {
+    "title": "Comptabilité & Rapports",
+    "subtitle": "Analyse financière, bilans et déclarations fiscales.",
+    "tabs": {
+      "pnl": "Compte de Résultat",
+      "tax": "Déclarations TVA",
+      "reports": "Rapports de Ventes"
+    },
+    "kpis": {
+      "revenue": "CA Total (HT)",
+      "expenses": "Charges / Achats",
+      "margin": "Marge Brute",
+      "net_profit": "Bénéfice Net",
+      "tax_collected": "TVA Collectée"
+    },
+    "sections": {
+      "performance_trend": "Tendance Performance (Ventes vs Coûts)",
+      "expense_structure": "Structure des Dépenses",
+      "tax_summary": "Récapitulatif Fiscal",
+      "monthly_breakdown": "Détails Mensuels"
+    },
+    "export_pdf": "Exporter PDF",
+    "export_excel": "Exporter Excel"
+  }
+}

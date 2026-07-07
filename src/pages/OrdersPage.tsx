@@ -445,56 +445,58 @@ export function OrdersPage() {
       </div>
 
       {/* Header responsive */}
-      <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between mb-6 md:mb-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6 md:mb-8">
         <div>
           <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">{businessConfig.labels.orders}</h1>
           <p className="text-xs md:text-sm text-slate-500">Suivi des flux et traitement des {businessConfig.labels.orders.toLowerCase()}.</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {/* View mode toggle */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg">
-            <button 
-              onClick={() => setViewMode('grid')}
-              className={cn(
-                "p-1.5 md:p-2 rounded-md transition-all",
-                viewMode === 'grid' 
-                  ? "bg-white shadow-sm text-orange-600" 
-                  : "text-slate-400 hover:text-slate-600"
-              )}
-            >
-              <LayoutGrid className="h-3.5 w-3.5 md:h-4 md:w-4" />
-            </button>
-            <button 
-              onClick={() => setViewMode('table')}
-              className={cn(
-                "p-1.5 md:p-2 rounded-md transition-all",
-                viewMode === 'table' 
-                  ? "bg-white shadow-sm text-orange-600" 
-                  : "text-slate-400 hover:text-slate-600"
-              )}
-            >
-              <List className="h-3.5 w-3.5 md:h-4 md:w-4" />
-            </button>
-          </div>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+          <div className="flex items-center gap-2">
+            {/* View mode toggle */}
+            <div className="flex items-center bg-slate-100 p-0.5 rounded-sm">
+              <button 
+                onClick={() => setViewMode('grid')}
+                className={cn(
+                  "p-1.5 md:p-2 rounded-sm transition-all",
+                  viewMode === 'grid' 
+                    ? "bg-white shadow-none text-orange-600" 
+                    : "text-slate-400 hover:text-slate-600"
+                )}
+              >
+                <LayoutGrid className="h-3.5 w-3.5 md:h-4 md:w-4" />
+              </button>
+              <button 
+                onClick={() => setViewMode('table')}
+                className={cn(
+                  "p-1.5 md:p-2 rounded-sm transition-all",
+                  viewMode === 'table' 
+                    ? "bg-white shadow-none text-orange-600" 
+                    : "text-slate-400 hover:text-slate-600"
+                )}
+              >
+                <List className="h-3.5 w-3.5 md:h-4 md:w-4" />
+              </button>
+            </div>
 
-          {/* Search bar */}
-          <div className="relative flex-1 sm:flex-none min-w-[150px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 md:h-4 md:w-4 text-slate-400" />
-            <Input
-              placeholder={t('orders_page.search_placeholder')}
-              className="pl-9 w-full sm:w-40 md:w-48 h-8 md:h-9 rounded-lg border-slate-200 bg-white text-sm"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            {/* Search bar */}
+            <div className="relative flex-1 sm:flex-none min-w-[150px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 md:h-4 md:w-4 text-slate-400" />
+              <Input
+                placeholder={t('orders_page.search_placeholder')}
+                className="pl-9 w-full sm:w-40 md:w-48 h-8 md:h-9 rounded-sm border-slate-200 bg-white text-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
 
           {/* New order button */}
           <Button
             onClick={() => setIsAddModalOpen(true)}
-            className="bg-orange-600 hover:bg-orange-700 text-white h-8 md:h-9 rounded-lg flex items-center gap-1.5 px-3 md:px-4 text-sm"
+            className="bg-orange-600 hover:bg-orange-700 text-white shadow-none h-9 md:h-10 rounded-sm flex items-center justify-center gap-1.5 px-3 md:px-4 text-sm font-semibold w-full sm:w-auto"
           >
             <Plus className="h-3.5 w-3.5 md:h-4 md:w-4" />
-            <span className="hidden xs:inline">{t('orders_page.new_order')}</span>
+            <span>{t('orders_page.new_order')}</span>
           </Button>
         </div>
       </div>
@@ -505,7 +507,7 @@ export function OrdersPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 md:gap-6">
             {paginatedOrders.map((order) => (
               <Card key={order.id} className={cn(
-                "shadow-none p-3 md:p-4 rounded-xl border-slate-200 hover:border-orange-200 transition-colors",
+                "shadow-none p-3 md:p-4 rounded-sm border-slate-200 hover:border-orange-200 transition-colors",
                 order.status !== 'COMPLETED' && order.status !== 'CANCELLED' && "bg-[#e9f7ff]"
               )}>
                 <CardHeader className="pb-2 md:pb-3 border-b border-slate-50 px-0">
@@ -517,7 +519,7 @@ export function OrdersPage() {
                         {businessConfig.features.hasTables ? getTableLabel(order.tableId) : (order.customerName || 'Vente Directe')}
                       </span>
                     </div>
-                    <span className={cn("text-[9px] md:text-[11px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-md border uppercase tracking-tighter", statusConfig[order.status].badge)}>
+                    <span className={cn("text-[9px] md:text-[11px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-sm border uppercase tracking-tighter", statusConfig[order.status].badge)}>
                       {t(statusConfig[order.status].key)}
                     </span>
                   </CardTitle>
@@ -542,7 +544,7 @@ export function OrdersPage() {
                       </div>
                     </div>
 
-                    <div className="bg-slate-50 p-2 md:p-2.5 rounded-lg border border-slate-100">
+                    <div className="bg-slate-50 p-2 md:p-2.5 rounded-sm border border-slate-100">
                       <p className="text-[9px] md:text-[11px] text-slate-400 uppercase font-bold mb-1 tracking-wide">{t('orders_page.preview')}</p>
                       <p className="text-xs md:text-sm text-slate-700 font-medium">{t('orders_page.items_selected', { count: order.items?.length || 0 })}</p>
                     </div>
@@ -553,13 +555,13 @@ export function OrdersPage() {
                         <NextStatusButton order={order} onUpdate={handleStatusUpdate} isProcessing={isProcessing} size="sm" />
                         <button 
                           onClick={() => { setOrderForDetail(order); setIsDetailOpen(true); }}
-                          className="px-2 md:px-3 py-1 text-[10px] md:text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-md transition-colors"
+                          className="px-2 md:px-3 py-1 text-[10px] md:text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-sm transition-colors"
                         >
                           {t('common.details')}
                         </button>
                         <button 
                           onClick={() => { setOrderToCancel(order); setIsCancelDialogOpen(true); }}
-                          className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                          className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-sm transition-colors"
                         >
                           <X className="h-3.5 w-3.5 md:h-4 md:w-4" />
                         </button>
@@ -580,7 +582,7 @@ export function OrdersPage() {
         </div>
       ) : (
         /* Table view - responsive with horizontal scroll */
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="bg-white rounded-sm border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs md:text-sm">
               <thead>
@@ -604,7 +606,7 @@ export function OrdersPage() {
                     {businessConfig.features.hasTables && <td className="px-3 md:px-6 py-3 md:py-4 hidden sm:table-cell text-xs">{order.guestCount}</td>}
                     <td className="px-3 md:px-6 py-3 md:py-4 font-black text-xs md:text-sm">{(order.totalAmount || 0).toLocaleString()} {t('common.currency')}</td>
                     <td className="px-3 md:px-6 py-3 md:py-4 hidden md:table-cell">
-                      <span className={cn("text-[9px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-md border uppercase tracking-tighter", statusConfig[order.status].badge)}>
+                      <span className={cn("text-[9px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-sm border uppercase tracking-tighter", statusConfig[order.status].badge)}>
                         {t(statusConfig[order.status].key)}
                       </span>
                     </td>
@@ -613,7 +615,7 @@ export function OrdersPage() {
                         <NextStatusButton order={order} onUpdate={handleStatusUpdate} isProcessing={isProcessing} size="sm" />
                         <button 
                           onClick={() => { setOrderForDetail(order); setIsDetailOpen(true); }}
-                          className="p-1.5 md:p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-md"
+                          className="p-1.5 md:p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-sm"
                         >
                           <ChevronRight className="h-3.5 w-3.5 md:h-4 md:w-4" />
                         </button>
@@ -649,84 +651,89 @@ export function OrdersPage() {
         />
         
         <div className={cn(
-          "relative bg-white w-full md:w-[90vw] lg:max-w-6xl h-full border-l border-slate-200 flex flex-col overflow-hidden transition-all duration-500 ease-out shadow-2xl",
+          "relative bg-white w-full md:w-[90vw] lg:max-w-6xl h-full border-l border-slate-200 flex flex-col overflow-hidden transition-all duration-500 ease-out",
           isAddModalOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
         )}>
             
-          {/* Header Modal - Responsive */}
-          <div className="p-3 md:p-4 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white sticky top-0 z-20 gap-3">
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              <div className={cn("h-8 w-8 md:h-10 md:w-10 rounded-full flex items-center justify-center", businessConfig.type === 'PHARMACY' ? "bg-emerald-50 text-emerald-600" : "bg-orange-50 text-orange-600")}>
-                {businessConfig.type === 'PHARMACY' ? <Stethoscope className="h-4 w-4 md:h-5 md:w-5" /> : <Users className="h-4 w-4 md:h-5 md:w-5" />}
+          {/* Header Modal - Titre + affectation */}
+          <div className="p-3 md:p-4 border-b border-slate-200 bg-white sticky top-0 z-20">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className={cn("h-9 w-9 md:h-11 md:w-11 rounded-full flex items-center justify-center shrink-0", businessConfig.type === 'PHARMACY' ? "bg-emerald-50 text-emerald-600" : "bg-orange-50 text-orange-600")}>
+                  {businessConfig.type === 'PHARMACY' ? <Stethoscope className="h-4 w-4 md:h-5 md:w-5" /> : <Users className="h-4 w-4 md:h-5 md:w-5" />}
+                </div>
+                <div className="min-w-0">
+                  <h2 className="text-base md:text-lg font-bold text-slate-900 leading-tight truncate">{t('orders_page.new_order')}</h2>
+                  <p className="text-[11px] text-slate-500 truncate">{businessConfig.labels.orders}</p>
+                </div>
               </div>
-              <div className="flex flex-col flex-1">
-                {businessConfig.type === 'RESTAURANT' ? (
-                  <>
-                    <Label className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">{t('orders_page.add_modal.assignment')}</Label>
-                    <div className="flex flex-wrap items-center bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 focus-within:border-orange-300 focus-within:bg-white transition-all gap-1">
-                      <select 
-                        className="text-xs md:text-sm font-bold bg-transparent border-none py-1 pl-1 pr-5 focus:ring-0 cursor-pointer text-slate-900 appearance-none min-w-[90px]"
-                        value={formData.tableId} 
-                        onChange={e => setFormData({...formData, tableId: e.target.value})}
-                      >
-                        <option value="">{t('orders_page.add_modal.table_placeholder')}</option>
-                        {(availableTables || [])
-                          .filter(t => t.status === 'FREE' || t.status === 'OCCUPIED')
-                          .map(table => (
-                            <option key={table.id} value={table.id}>
-                              {table.status === 'OCCUPIED' ? '🔴 ' : ''}T.{table.number} {table.zone ? `(${table.zone})` : ''}
-                            </option>
-                          ))}
-                      </select>
-                      <span className="text-slate-300 text-xs">|</span>
-                      <div className="flex items-center gap-1">
-                        <input 
-                          type="number" 
-                          className="text-xs md:text-sm font-bold bg-transparent border-none p-0 focus:ring-0 w-8 text-slate-900 text-center"
-                          value={formData.guestCount || 1} 
-                          onChange={e => setFormData({...formData, guestCount: parseInt(e.target.value) || 1})}
-                          min="1"
-                        />
-                        <span className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase">{t('orders_page.add_modal.pers')}</span>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="hover:bg-slate-100 rounded-full shrink-0" 
+                onClick={() => setIsAddModalOpen(false)}
+              >
+                <X className="h-4 w-4 md:h-5 md:w-5 text-slate-400" />
+              </Button>
+            </div>
+
+            {/* Affectation (table / client) */}
+            <div className="mt-3">
+              {businessConfig.type === 'RESTAURANT' ? (
+                <div className="flex flex-wrap items-center bg-slate-50 border border-slate-200 rounded-sm px-2 py-1.5 focus-within:border-orange-300 focus-within:bg-white transition-all gap-2">
+                  <select 
+                    className="text-xs md:text-sm font-bold bg-transparent border-none py-1 pl-1 pr-5 focus:ring-0 cursor-pointer text-slate-900 appearance-none min-w-[90px]"
+                    value={formData.tableId} 
+                    onChange={e => setFormData({...formData, tableId: e.target.value})}
+                  >
+                    <option value="">{t('orders_page.add_modal.table_placeholder')}</option>
+                    {(availableTables || [])
+                      .filter(t => t.status === 'FREE' || t.status === 'OCCUPIED')
+                      .map(table => (
+                        <option key={table.id} value={table.id}>
+                          {table.status === 'OCCUPIED' ? '🔴 ' : ''}T.{table.number} {table.zone ? `(${table.zone})` : ''}
+                        </option>
+                      ))}
+                  </select>
+                  <span className="text-slate-300 text-xs">|</span>
+                  <div className="flex items-center gap-1">
+                    <input 
+                      type="number" 
+                      className="text-xs md:text-sm font-bold bg-transparent border-none p-0 focus:ring-0 w-8 text-slate-900 text-center"
+                      value={formData.guestCount || 1} 
+                      onChange={e => setFormData({...formData, guestCount: parseInt(e.target.value) || 1})}
+                      min="1"
+                    />
+                    <span className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase">{t('orders_page.add_modal.pers')}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col sm:flex-row gap-2 w-full">
+                  <div className="flex-1">
+                    <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 block">
+                      {businessConfig.type === 'PHARMACY' ? 'Patient' : t('dashboard.customer')}
+                    </Label>
+                    <Input 
+                      placeholder={businessConfig.type === 'PHARMACY' ? "Nom du Patient" : "Nom du Client"} 
+                      className="h-9 text-xs border-slate-200 bg-slate-50 focus:bg-white transition-all" 
+                      value={formData.customerName}
+                      onChange={e => setFormData({...formData, customerName: e.target.value})} 
+                    />
+                  </div>
+                  {businessConfig.type === 'PHARMACY' && (
                     <div className="flex-1">
-                      <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 block">
-                        {businessConfig.type === 'PHARMACY' ? 'Patient' : t('dashboard.customer')}
-                      </Label>
+                      <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 block">N° Ordonnance</Label>
                       <Input 
-                        placeholder={businessConfig.type === 'PHARMACY' ? "Nom du Patient" : "Nom du Client"} 
+                        placeholder="REF-ORDO-..." 
                         className="h-9 text-xs border-slate-200 bg-slate-50 focus:bg-white transition-all" 
-                        value={formData.customerName}
-                        onChange={e => setFormData({...formData, customerName: e.target.value})} 
+                        value={formData.prescriptionId}
+                        onChange={e => setFormData({...formData, prescriptionId: e.target.value})}
                       />
                     </div>
-                    {businessConfig.type === 'PHARMACY' && (
-                      <div className="flex-1">
-                        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 block">N° Ordonnance</Label>
-                        <Input 
-                          placeholder="REF-ORDO-..." 
-                          className="h-9 text-xs border-slate-200 bg-slate-50 focus:bg-white transition-all" 
-                          value={formData.prescriptionId}
-                          onChange={e => setFormData({...formData, prescriptionId: e.target.value})} 
-                        />
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="hover:bg-slate-100 rounded-full absolute top-3 right-3 md:static" 
-              onClick={() => setIsAddModalOpen(false)}
-            >
-              <X className="h-4 w-4 md:h-5 md:w-5 text-slate-400" />
-            </Button>
           </div>
 
           <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
@@ -755,7 +762,7 @@ export function OrdersPage() {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 md:h-4 md:w-4 text-slate-400 group-focus-within:text-orange-500 transition-colors" />
                   <Input
                     placeholder={t('orders_page.add_modal.search_product_placeholder')}
-                    className="pl-9 h-9 md:h-11 border-slate-200 bg-slate-50/50 focus:bg-white rounded-lg transition-all focus:ring-4 focus:ring-orange-500/5 focus:border-orange-300 text-xs md:text-sm"
+                    className="pl-9 h-9 md:h-11 border-slate-200 bg-slate-50/50 focus:bg-white rounded-sm transition-all focus:ring-4 focus:ring-orange-500/5 focus:border-orange-300 text-xs md:text-sm"
                     value={productSearchTerm}
                     onChange={(e) => handleProductSearch(e.target.value)}
                   />
@@ -780,11 +787,11 @@ export function OrdersPage() {
                   <button 
                     key={product.id}
                     onClick={() => addToCart(product)}
-                    className="flex flex-col text-left bg-white border border-slate-200 p-2 md:p-3 rounded-xl hover:border-orange-300 hover:shadow-md transition-all group"
+                    className="flex flex-col text-left bg-white border border-slate-200 p-2 md:p-3 rounded-sm hover:border-orange-300 transition-all group h-[300px]"
                   >
                     {product.imageUrl && (
-                      <div className="w-full aspect-[4/3] mb-1.5 md:mb-3 overflow-hidden rounded-lg bg-slate-100 border border-slate-100">
-                        <img src={product.imageUrl} alt={product.name} className="w-full h-[200px] object-cover transition-transform group-hover:scale-110 duration-300" />
+                      <div className="w-full h-40 mb-1.5 md:mb-3 overflow-hidden rounded-sm bg-slate-100 border border-slate-100 shrink-0">
+                        <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-300" />
                       </div>
                     )}
                     <span className="text-[8px] md:text-[10px] font-mono text-slate-400 uppercase mb-0.5">{product.sku}</span>
@@ -796,7 +803,7 @@ export function OrdersPage() {
             </div>
 
             {/* Cart Section - Responsive */}
-            <div className="w-full lg:w-[380px] flex flex-col bg-white border-t lg:border-t-0 lg:border-l border-slate-200 h-[320px] sm:h-[350px] lg:h-auto shrink-0">
+            <div className="w-full lg:w-[380px] flex flex-col bg-slate-50 border-t lg:border-t-0 lg:border-l border-slate-200 h-[320px] sm:h-[350px] lg:h-auto shrink-0">
               <div className="p-3 md:p-4 border-b border-slate-100 flex items-center justify-between">
                 <span className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">{t('orders_page.add_modal.cart')}</span>
                 <span className="text-[9px] md:text-[10px] font-bold text-orange-600 bg-orange-50 px-1.5 md:px-2 py-0.5 rounded-full">{t('orders_page.items_selected', { count: cart.length })}</span>
@@ -828,7 +835,7 @@ export function OrdersPage() {
                     <p className="text-[10px] md:text-xs text-slate-400 font-medium italic">{t('orders_page.add_modal.empty_cart')}</p>
                   </div>
                 ) : cart.map(item => (
-                  <div key={item.id} className="p-2 md:p-3 bg-slate-50/50 rounded-xl border border-slate-100 group transition-all hover:border-orange-100 hover:bg-white">
+                  <div key={item.id} className="p-2 md:p-3 bg-slate-50/50 rounded-sm border border-slate-100 group transition-all hover:border-orange-100 hover:bg-white">
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex flex-col flex-1 mr-2">
                         <span className="text-xs md:text-sm font-bold text-slate-800 leading-tight line-clamp-2">{item.name}</span>
@@ -839,7 +846,7 @@ export function OrdersPage() {
                       </button>
                     </div>
                     <div className="flex items-center justify-between flex-wrap gap-2">
-                      <div className="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden h-7 md:h-8">
+                      <div className="flex items-center bg-white border border-slate-200 rounded-sm overflow-hidden h-7 md:h-8">
                         <button onClick={() => updateQuantity(item.id, -1)} className="px-2 md:px-3 hover:bg-slate-50 text-slate-400 transition-colors">
                           <Minus className="h-2.5 w-2.5 md:h-3 md:w-3" />
                         </button>
@@ -876,14 +883,14 @@ export function OrdersPage() {
                 <div className="space-y-2">
                   <textarea 
                     placeholder={t('orders_page.add_modal.special_instructions')}
-                    className="w-full p-2 text-[10px] md:text-xs border border-slate-200 rounded-lg focus:ring-0 focus:border-orange-500 resize-none h-12 md:h-16 bg-white"
+                    className="w-full p-2 text-[10px] md:text-xs border border-slate-200 rounded-sm focus:ring-0 focus:border-orange-500 resize-none h-12 md:h-16 bg-white"
                     value={formData.specialInstructions} 
                     onChange={e => setFormData({...formData, specialInstructions: e.target.value})}
                   />
                   <Button 
                     onClick={handleCreateOrder}
                     disabled={cart.length === 0 || (businessConfig.type === 'RESTAURANT' && !formData.tableId)}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold h-9 md:h-11 flex items-center justify-between px-3 md:px-4 text-xs md:text-sm group"
+                    className="w-full bg-orange-600 hover:bg-orange-700 text-white shadow-none font-bold h-9 md:h-11 flex items-center justify-between px-3 md:px-4 text-xs md:text-sm group"
                   >
                     <span className="truncate">
                       {businessConfig.type === 'RETAIL' 
@@ -919,7 +926,7 @@ export function OrdersPage() {
           onClick={() => setIsDetailOpen(false)} 
         />
         <div className={cn(
-          "relative bg-white w-full sm:max-w-md h-full border-l border-slate-200 flex flex-col overflow-hidden transition-all duration-500 ease-out shadow-2xl", 
+          "relative bg-white w-full sm:max-w-md h-full border-l border-slate-200 flex flex-col overflow-hidden transition-all duration-500 ease-out", 
           isDetailOpen ? "translate-x-0" : "translate-x-full"
         )}>
           <div className="p-3 md:p-4 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0">
@@ -935,12 +942,12 @@ export function OrdersPage() {
           {orderForDetail && (
             <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
               {/* Status summary */}
-              <div className="flex items-center justify-between p-3 md:p-4 bg-slate-50 rounded-xl border border-slate-100">
+              <div className="flex items-center justify-between p-3 md:p-4 bg-slate-50 rounded-sm border border-slate-100">
                 <div className="flex flex-col gap-0.5">
                   <span className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">{businessConfig.features.hasTables ? t('orders_page.detail_drawer.assigned_to') : t('orders_page.customer')}</span>
                   <span className="text-xs md:text-sm font-bold text-slate-900">{businessConfig.features.hasTables ? getTableLabel(orderForDetail.tableId) : (orderForDetail.customerName || 'Client Passage')}</span>
                 </div>
-                <span className={cn("text-[9px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-md border uppercase tracking-tighter", statusConfig[orderForDetail.status].badge)}>
+                <span className={cn("text-[9px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-sm border uppercase tracking-tighter", statusConfig[orderForDetail.status].badge)}>
                   {t(statusConfig[orderForDetail.status].key)}
                 </span>
               </div>
@@ -952,9 +959,9 @@ export function OrdersPage() {
                 </Label>
                 <div className="space-y-2">
                   {orderForDetail.items?.map((item) => (
-                    <div key={item.id} className="flex justify-between items-center p-2 md:p-3 border border-slate-100 rounded-xl">
+                    <div key={item.id} className="flex justify-between items-center p-2 md:p-3 border border-slate-100 rounded-sm">
                       <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
-                        <div className="h-7 w-7 md:h-8 md:w-8 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] md:text-xs font-bold text-slate-500 shrink-0">
+                        <div className="h-7 w-7 md:h-8 md:w-8 rounded-sm bg-slate-100 flex items-center justify-center text-[10px] md:text-xs font-bold text-slate-500 shrink-0">
                           {item.quantity}x
                         </div>
                         <div className="flex flex-col min-w-0 flex-1">
@@ -973,7 +980,7 @@ export function OrdersPage() {
                 <Label className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
                   <Info className="h-3 w-3 md:h-3.5 md:w-3.5" /> {t('orders_page.detail_drawer.special_instructions')}
                 </Label>
-                <div className="p-3 md:p-4 bg-orange-50/30 border border-orange-100 rounded-xl italic text-xs md:text-sm text-slate-600">
+                <div className="p-3 md:p-4 bg-orange-50/30 border border-orange-100 rounded-sm italic text-xs md:text-sm text-slate-600">
                   {orderForDetail.specialInstructions || t('orders_page.detail_drawer.no_instructions')}
                 </div>
               </div>
@@ -1016,7 +1023,7 @@ export function OrdersPage() {
           <div className="p-3 md:p-4 bg-white border-t border-slate-100 flex gap-2 md:gap-3 sticky bottom-0">
             <Button 
               variant="outline" 
-              className="flex-1 rounded-xl font-bold border-slate-200 text-xs md:text-sm h-9 md:h-10" 
+              className="flex-1 rounded-sm font-bold border-slate-200 text-xs md:text-sm h-9 md:h-10 shadow-none" 
               onClick={() => setIsDetailOpen(false)}
             >
               {t('common.cancel')}
@@ -1093,7 +1100,7 @@ function NextStatusButton({
       disabled={isProcessing}
       onClick={() => onUpdate(order.id, config.action as any)}
       className={cn(
-        "text-white font-bold rounded-lg flex items-center gap-1 md:gap-2 shadow-sm transition-all",
+        "text-white font-bold rounded-sm flex items-center gap-1 md:gap-2 shadow-none transition-all",
         config.color,
         size === 'sm' ? "h-7 px-2 text-[9px] md:text-[10px]" : "h-8 md:h-9 px-2 md:px-3 text-xs md:text-sm",
         className
@@ -1127,11 +1134,11 @@ function PaginationControls({ currentPage, totalPages, totalItems, pageSize, onP
           size="sm" 
           disabled={currentPage === 1} 
           onClick={() => onPageChange(currentPage - 1)} 
-          className="h-7 w-7 md:h-8 md:w-8 p-0 rounded-lg"
+          className="h-7 w-7 md:h-8 md:w-8 p-0 rounded-sm shadow-none"
         >
           <ChevronLeft className="h-3 w-3 md:h-4 md:w-4" />
         </Button>
-        <span className="flex items-center px-2 md:px-3 text-[10px] md:text-xs font-bold text-slate-700 bg-white border border-slate-200 rounded-lg">
+        <span className="flex items-center px-2 md:px-3 text-[10px] md:text-xs font-bold text-slate-700 bg-white border border-slate-200 rounded-sm">
           {currentPage} / {totalPages}
         </span>
         <Button 
@@ -1139,7 +1146,7 @@ function PaginationControls({ currentPage, totalPages, totalItems, pageSize, onP
           size="sm" 
           disabled={currentPage === totalPages} 
           onClick={() => onPageChange(currentPage + 1)} 
-          className="h-7 w-7 md:h-8 md:w-8 p-0 rounded-lg"
+          className="h-7 w-7 md:h-8 md:w-8 p-0 rounded-sm shadow-none"
         >
           <ChevronRight className="h-3 w-3 md:h-4 md:w-4" />
         </Button>

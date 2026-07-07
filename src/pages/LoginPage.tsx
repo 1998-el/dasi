@@ -10,7 +10,7 @@ import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
 import { Card, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
-import { AlertCircle, CheckCircle2 } from 'lucide-react'
+import { AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-react'
 
 const loginSchema = yup.object({
   email: yup.string().email('Adresse email invalide').required('L\'email est requis'),
@@ -24,6 +24,7 @@ export function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const [authError, setAuthError] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
   
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
@@ -157,17 +158,22 @@ export function LoginPage() {
                   Mot de passe oublié ?
                 </Link>
               </div>
-              <Input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                placeholder="••••••••"
-                className={cn(
-                  "focus-visible:ring-orange-500/30 focus-visible:border-orange-500 h-10 rounded-sm text-sm",
-                  errors.password && "border-red-300 focus-visible:ring-red-500/20 focus-visible:border-red-500"
-                )}
-                {...register('password')}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                  className={cn(
+                    "pr-10 focus-visible:ring-orange-500/30 focus-visible:border-orange-500 h-10 rounded-sm text-sm",
+                    errors.password && "border-red-300 focus-visible:ring-red-500/20 focus-visible:border-red-500"
+                  )}
+                  {...register('password')}
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600">
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-xs font-medium text-red-600 flex items-center gap-1">
                   <AlertCircle className="h-3 w-3" />

@@ -142,7 +142,7 @@ export function ExpensesPage() {
         <div className="flex items-center gap-3">
           <Button 
             onClick={() => setIsExpenseDrawerOpen(true)}
-            className="bg-gray-500 hover:bg-orange-600 text-white h-10 rounded-sm flex items-center gap-2 transition-all duration-300 shadow-lg shadow-slate-200"
+            className="bg-orange-600 hover:bg-orange-700 text-white h-10 rounded-sm flex items-center gap-2 transition-all duration-300 shadow-lg shadow-slate-200"
           >
             <Plus className="h-4 w-4" />
             Nouvelle Dépense
@@ -361,7 +361,7 @@ export function ExpensesPage() {
             <Button variant="outline" className="flex-1 rounded-sm font-black uppercase text-[10px] tracking-widest" onClick={() => setIsExpenseDrawerOpen(false)}>Annuler</Button>
             <Button 
               disabled={isProcessing || !expenseFormData.budgetId || expenseFormData.amount <= 0}
-              className="flex-[2] bg-slate-900 hover:bg-orange-600 text-white rounded-sm font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all" 
+              className="flex-[2] bg-orange-600 hover:bg-orange-700 text-white rounded-sm font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all" 
               onClick={handleCreateExpense}
             >
               {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}

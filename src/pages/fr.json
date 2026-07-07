@@ -41,6 +41,8 @@
   "dashboard": {
     "title": "Tableau de bord",
     "subtitle": "Vue d'ensemble de l'activité.",
+    "daily": "Journalier",
+    "weekly": "Hebdomadaire",
     "welcome_morning": "Bonjour",
     "welcome_evening": "Bonsoir",
     "occupancy_rate": "Taux d'occupation",
@@ -397,6 +399,8 @@
     "subtitle": "Analyse financière, bilans et déclarations fiscales.",
     "tabs": {
       "pnl": "Compte de Résultat",
+      "balance": "Balance",
+      "journal": "Journal OHADA",
       "tax": "Déclarations TVA",
       "reports": "Rapports de Ventes"
     },

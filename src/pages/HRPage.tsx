@@ -31,7 +31,8 @@ import {
   Palmtree,
   BarChart3,
   Settings2,
-  CalendarCheck
+  CalendarCheck,
+  UserCheck
 } from 'lucide-react'
 import { authService } from './auth.service'
 import { useToast, Toast } from '../components/ui/Toast'
@@ -86,9 +87,26 @@ export function HRPage() {
         authService.getHrConfig()
       ])
       console.log('[HRPage] Sync Backend OK:', { summary: sumData, count: empData.length });
+
+      // Map employeeId -> "Prénom Nom" pour résoudre le nom dans l'activité récente
+      // (le backend /hr/summary ne renvoie que l'employeeId, pas le nom).
+      const employeeNameById = new Map<string, string>(
+        (empData || []).map((e: any) => [e.id, `${e.firstName || ''} ${e.lastName || ''}`.trim()])
+      )
+
+      const enrichedActivity = (sumData?.recentActivity ?? []).map((a: any) => ({
+        ...a,
+        employeeName:
+          a.employeeName ||
+          employeeNameById.get(a.employeeId) ||
+          'Employé inconnu',
+        // Le backend renvoie `markedBy` (qui a pointé) ; on garde la compatibilité.
+        markedBy: a.markedBy ?? a.recordedByName ?? null,
+      }))
+
       setSummary(sumData)
       setEmployees(empData)
-      setRecentAttendance(sumData?.recentActivity ?? [])
+      setRecentAttendance(enrichedActivity)
       setLeaveRequests(leaveData)
       setHrConfig(configData)
     } catch (e: any) {
@@ -302,6 +320,43 @@ export function HRPage() {
                 <StatCard label="En Congés" value={summary?.employeesOnLeave?.length ?? 0} icon={Calendar} color="orange" />
                 <StatCard label="Demandes en attente" value={summary?.pendingLeaveRequestsCount ?? 0} icon={AlertCircle} color="purple" />
               </div>
+
+              {/* Liste de qui est présent aujourd'hui + par qui (marqué par) */}
+              <Card className="rounded-sm border-slate-200">
+                <div className="p-4 border-b border-slate-100 font-bold text-xs uppercase text-slate-500 tracking-widest flex items-center justify-between">
+                  Présents aujourd'hui ({summary?.presentToday ?? 0})
+                  <UserCheck className="h-3.5 w-3.5 text-emerald-400" />
+                </div>
+                <CardContent className="p-0">
+                  {summary?.presentEmployees?.length > 0 ? (
+                    <div className="divide-y divide-slate-50">
+                      {summary.presentEmployees.map((p: any, i: number) => (
+                        <div key={p.id || i} className="px-4 py-3 flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className={cn("p-2 rounded-sm bg-emerald-50 text-emerald-600")}>
+                              <LogIn className="h-3.5 w-3.5" />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-xs font-bold text-slate-900">{p.name || 'Employé'}</span>
+                              <span className="text-[10px] text-slate-400">
+                                Depuis {p.markedAt ? new Date(p.markedAt).toLocaleTimeString() : '—'}
+                                {p.markedBy ? ` · pointé par ${p.markedBy}` : ''}
+                              </span>
+                            </div>
+                          </div>
+                          <span className="text-[10px] font-black px-1.5 py-0.5 rounded-sm uppercase text-emerald-700 bg-emerald-50">
+                            Présent
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-slate-400 italic text-center py-4">
+                      Liste détaillée indisponible — {summary?.presentToday ?? 0} présence(s) comptabilisée(s). Activez le champ <code>presentEmployees</code> côté backend.
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card className="rounded-sm border-slate-200">
@@ -316,7 +371,10 @@ export function HRPage() {
                             </div>
                             <div className="flex flex-col">
                               <span className="text-xs font-bold text-slate-900">{log.employeeName || 'Employé inconnu'}</span>
-                              <span className="text-[10px] text-slate-400">{new Date(log.time).toLocaleTimeString()}</span>
+                              <span className="text-[10px] text-slate-400">
+                                {new Date(log.time).toLocaleTimeString()}
+                                {log.markedBy ? ` · par ${log.markedBy}` : ''}
+                              </span>
                             </div>
                           </div>
                           <span className={cn("text-[10px] font-black px-1.5 py-0.5 rounded-sm uppercase", log.type === 'CHECK_IN' ? "text-emerald-700 bg-emerald-50" : "text-red-700 bg-red-50")}>

@@ -30,11 +30,12 @@ export function AccountingPage() {
   const { t } = useTranslation()
   const { businessConfig } = useAuth()
   const { showSuccess, showError, toast } = useToast()
-  const [activeTab, setActiveTab] = useState<'pnl' | 'balance' | 'reports'>('pnl')
+  const [activeTab, setActiveTab] = useState<'pnl' | 'balance' | 'journal' | 'reports'>('pnl')
   const [isLoading, setIsLoading] = useState(true)
   const [pnlData, setPnlData] = useState<any[]>([])
   const [expenseBreakdown, setExpenseBreakdown] = useState<any[]>([])
   const [balanceData, setBalanceData] = useState<any>(null)
+  const [journalData, setJournalData] = useState<any[]>([])
   const [reportHistory, setReportHistory] = useState<any[]>([])
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
 
@@ -53,6 +54,9 @@ export function AccountingPage() {
       } else if (activeTab === 'reports') {
         const history = await authService.getZReportHistory()
         setReportHistory(history)
+      } else if (activeTab === 'journal') {
+        const data = await authService.getAccountingJournal()
+        setJournalData(data || [])
       }
     } catch (e: any) {
       showError(e.message || "Erreur de chargement des données comptables")
@@ -131,7 +135,7 @@ export function AccountingPage() {
              />
           </div>
           <div className="flex bg-slate-100 p-1 rounded-sm border border-slate-200 mr-2">
-            {(['pnl', 'balance', 'reports'] as const).map((tab) => (
+            {(['pnl', 'balance', 'journal', 'reports'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -147,7 +151,7 @@ export function AccountingPage() {
           <Button variant="outline" size="sm" className="h-9 border-slate-200 text-slate-600 font-bold text-[10px] uppercase gap-2" onClick={handleExportExcel}>
             <Download className="h-3.5 w-3.5" /> Excel
           </Button>
-          <Button className="h-9 bg-slate-900 hover:bg-black text-white font-bold text-[10px] uppercase gap-2" onClick={handleDownloadZReport}>
+          <Button className="h-9 bg-orange-600 hover:bg-orange-700 text-white font-bold text-[10px] uppercase gap-2" onClick={handleDownloadZReport}>
             <FileText className="h-3.5 w-3.5" /> Z-Report
           </Button>
         </div>
@@ -296,7 +300,62 @@ export function AccountingPage() {
               </table>
            </CardContent>
         </Card>
-      ) : activeTab === 'reports' ? (
+       ) : activeTab === 'journal' ? (
+        <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
+           <CardHeader className="border-b border-slate-50 bg-slate-50/30">
+              <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest">Journal Comptable (OHADA)</CardTitle>
+           </CardHeader>
+           <CardContent className="p-0 overflow-x-auto">
+              <table className="w-full text-left border-collapse text-sm">
+                 <thead>
+                    <tr className="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400 border-b border-slate-100">
+                       <th className="px-6 py-3">Référence</th>
+                       <th className="px-6 py-3">Journal</th>
+                       <th className="px-6 py-3">Libellé</th>
+                       <th className="px-6 py-3">Date</th>
+                       <th className="px-6 py-3 text-right">Montant</th>
+                    </tr>
+                 </thead>
+                 <tbody className="divide-y divide-slate-50">
+                    {journalData.length > 0 ? journalData.map((entry: any) => {
+                      const total = (entry.lines || []).reduce(
+                        (acc: number, l: any) => acc + Number(l.debit ?? 0) + Number(l.credit ?? 0),
+                        0,
+                      ) / 2
+                      return (
+                        <tr key={entry.id} className="hover:bg-slate-50/50 align-top">
+                           <td className="px-6 py-4 font-mono text-xs font-bold text-slate-700">{entry.reference}</td>
+                           <td className="px-6 py-4">
+                             <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded-sm bg-orange-50 text-orange-700 border border-orange-100">
+                               {entry.journal}
+                             </span>
+                           </td>
+                           <td className="px-6 py-4">
+                             <p className="text-xs font-medium text-slate-700">{entry.description}</p>
+                             <div className="mt-1 flex flex-wrap gap-1">
+                               {(entry.lines || []).map((l: any, i: number) => (
+                                 <span key={i} className="text-[9px] font-mono text-slate-400 bg-slate-100 rounded px-1 py-0.5">
+                                   {l.accountCode}
+                                 </span>
+                               ))}
+                             </div>
+                           </td>
+                           <td className="px-6 py-4 text-xs text-slate-500">{new Date(entry.createdAt).toLocaleDateString()}</td>
+                           <td className="px-6 py-4 text-right font-black text-slate-800">{total.toLocaleString()} F</td>
+                        </tr>
+                      )
+                    }) : (
+                      <tr>
+                        <td colSpan={5} className="px-6 py-12 text-center text-slate-400 italic">
+                          Aucune écriture comptable enregistrée pour le moment.
+                        </td>
+                      </tr>
+                    )}
+                 </tbody>
+              </table>
+           </CardContent>
+        </Card>
+       ) : activeTab === 'reports' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
             <CardHeader className="border-b border-slate-50 bg-slate-50/30">
@@ -311,7 +370,7 @@ export function AccountingPage() {
               </p>
               <Button 
                 onClick={handleDownloadZReport}
-                className="w-full bg-slate-900 hover:bg-black text-white font-bold text-[10px] uppercase h-10 gap-2"
+                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-[10px] uppercase h-10 gap-2"
               >
                 <Download className="h-3.5 w-3.5" /> Télécharger le Z-Report
               </Button>

@@ -13,6 +13,8 @@ import {
   X,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
+  ChevronDown,
+  ChevronUp,
   Save,
   Loader2,
   AlertCircle,
@@ -21,7 +23,14 @@ import {
   Check,
   Search,
   Eye,
-  FileText
+  FileText,
+  Grid3x3,
+  MapPin,
+  UtensilsCrossed,
+  Sparkles,
+  Wrench,
+  Ban,
+  CalendarClock
 } from 'lucide-react'
 import { cn } from '../lib/utils' // Assuming cn is a utility for class names
 import { useAuth, useRequireRole } from '../context/AuthContext'
@@ -66,13 +75,79 @@ interface TableStats {
 }
 
 // Configuration visuelle des statuts (alignée sur les couleurs backend)
-const statusConfig: Record<TableStatus, { label: string; bg: string; text: string; badge: string }> = {
-  FREE: { label: 'Libre', bg: 'bg-emerald-500', text: 'text-emerald-700', badge: 'bg-emerald-50 border-emerald-200 text-emerald-800' },
-  OCCUPIED: { label: 'Occupé', bg: 'bg-red-500', text: 'text-red-700', badge: 'bg-red-50 border-red-200 text-red-800' },
-  RESERVED: { label: 'Réservé', bg: 'bg-amber-500', text: 'text-amber-700', badge: 'bg-amber-50 border-amber-200 text-amber-800' },
-  CLEANING: { label: 'Nettoyage', bg: 'bg-blue-500', text: 'text-blue-700', badge: 'bg-blue-50 border-blue-200 text-blue-800' },
-  MAINTENANCE: { label: 'Maintenance', bg: 'bg-slate-500', text: 'text-slate-700', badge: 'bg-slate-50 border-slate-200 text-slate-800' },
-  OUT_OF_SERVICE: { label: 'Hors service', bg: 'bg-neutral-800', text: 'text-neutral-700', badge: 'bg-neutral-100 border-neutral-300 text-neutral-800' },
+// Chaque statut porte désormais son icône, sa couleur d'accent et ses classes
+// de carte (fond + bordure) afin d'avoir une seule source de vérité pour
+// l'affichage du statut, quel que soit le mode de vue (grille, plan, liste).
+const statusConfig: Record<TableStatus, {
+  label: string
+  bg: string
+  text: string
+  badge: string
+  icon: React.ElementType
+  card: string
+  cardAccent: string
+  action: string
+}> = {
+  FREE: {
+    label: 'Libre',
+    bg: 'bg-emerald-500',
+    text: 'text-emerald-700',
+    badge: 'bg-emerald-50 border-emerald-200 text-emerald-800',
+    icon: Check,
+    card: 'bg-emerald-50 border-emerald-200',
+    cardAccent: 'text-emerald-700',
+    action: 'Installer des clients',
+  },
+  OCCUPIED: {
+    label: 'Occupée',
+    bg: 'bg-red-500',
+    text: 'text-red-700',
+    badge: 'bg-red-50 border-red-200 text-red-800',
+    icon: UtensilsCrossed,
+    card: 'bg-red-50 border-red-200',
+    cardAccent: 'text-red-700',
+    action: 'Libérer la table',
+  },
+  RESERVED: {
+    label: 'Réservée',
+    bg: 'bg-amber-500',
+    text: 'text-amber-700',
+    badge: 'bg-amber-50 border-amber-200 text-amber-800',
+    icon: CalendarClock,
+    card: 'bg-amber-50 border-amber-200',
+    cardAccent: 'text-amber-700',
+    action: 'Installer les clients',
+  },
+  CLEANING: {
+    label: 'Nettoyage',
+    bg: 'bg-blue-500',
+    text: 'text-blue-700',
+    badge: 'bg-blue-50 border-blue-200 text-blue-800',
+    icon: Sparkles,
+    card: 'bg-blue-50 border-blue-200',
+    cardAccent: 'text-blue-700',
+    action: 'Marquer comme libre',
+  },
+  MAINTENANCE: {
+    label: 'Maintenance',
+    bg: 'bg-slate-500',
+    text: 'text-slate-700',
+    badge: 'bg-slate-50 border-slate-200 text-slate-800',
+    icon: Wrench,
+    card: 'bg-slate-100 border-slate-300',
+    cardAccent: 'text-slate-700',
+    action: 'Remettre en service',
+  },
+  OUT_OF_SERVICE: {
+    label: 'Hors service',
+    bg: 'bg-neutral-800',
+    text: 'text-neutral-700',
+    badge: 'bg-neutral-100 border-neutral-300 text-neutral-800',
+    icon: Ban,
+    card: 'bg-neutral-100 border-neutral-300',
+    cardAccent: 'text-neutral-700',
+    action: 'Remettre en service',
+  },
 }
 
 const statusOptions: TableStatus[] = ['FREE', 'OCCUPIED', 'RESERVED', 'CLEANING', 'MAINTENANCE', 'OUT_OF_SERVICE']
@@ -81,14 +156,14 @@ const statusOptions: TableStatus[] = ['FREE', 'OCCUPIED', 'RESERVED', 'CLEANING'
 const zoneOptions = ['Salle Principale', 'Terrasse', 'VIP / Salon', 'Bar', 'Mezzanine', 'Jardin']
 
 // Configuration visuelle des zones
-const ZONE_THEMES: Record<string, { color: string; bg: string; border: string }> = {
-  'Salle Principale': { color: 'text-blue-600', bg: 'bg-blue-400/5', border: 'border-blue-200' },
-  'Terrasse': { color: 'text-emerald-600', bg: 'bg-emerald-400/5', border: 'border-emerald-200' },
-  'VIP / Salon': { color: 'text-purple-600', bg: 'bg-purple-400/5', border: 'border-purple-200' },
-  'Bar': { color: 'text-amber-600', bg: 'bg-amber-400/5', border: 'border-amber-200' },
-  'Mezzanine': { color: 'text-indigo-600', bg: 'bg-indigo-400/5', border: 'border-indigo-200' },
-  'Jardin': { color: 'text-lime-600', bg: 'bg-lime-400/5', border: 'border-lime-200' },
-  'default': { color: 'text-slate-600', bg: 'bg-slate-400/5', border: 'border-slate-200' }
+const ZONE_THEMES: Record<string, { color: string; bg: string; border: string; bar: string }> = {
+  'Salle Principale': { color: 'text-blue-600', bg: 'bg-blue-400/5', border: 'border-blue-200', bar: 'bg-blue-500' },
+  'Terrasse': { color: 'text-emerald-600', bg: 'bg-emerald-400/5', border: 'border-emerald-200', bar: 'bg-emerald-500' },
+  'VIP / Salon': { color: 'text-purple-600', bg: 'bg-purple-400/5', border: 'border-purple-200', bar: 'bg-purple-500' },
+  'Bar': { color: 'text-amber-600', bg: 'bg-amber-400/5', border: 'border-amber-200', bar: 'bg-amber-500' },
+  'Mezzanine': { color: 'text-indigo-600', bg: 'bg-indigo-400/5', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+  'Jardin': { color: 'text-lime-600', bg: 'bg-lime-400/5', border: 'border-lime-200', bar: 'bg-lime-500' },
+  'default': { color: 'text-slate-600', bg: 'bg-slate-400/5', border: 'border-slate-200', bar: 'bg-slate-500' }
 }
 
 export function TablesPage() {
@@ -100,7 +175,7 @@ export function TablesPage() {
     isAuthenticated,
     businessConfig
   } = useAuth()
-  const [viewMode, setViewMode] = useState<'plan' | 'list'>('plan')
+  const [viewMode, setViewMode] = useState<'plan' | 'grid' | 'list'>('grid')
   const [tables, setTables] = useState<RestaurantTable[]>([])
   const [stats, setStats] = useState<TableStats | null>(null)
   const [isFetching, setIsFetching] = useState(true)
@@ -115,10 +190,12 @@ export function TablesPage() {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null)
   const [isLoadingPreview, setIsLoadingPreview] = useState(false)
   const [selectedTable, setSelectedTable] = useState<RestaurantTable | null>(null)
+  const [selectedTableId, setSelectedTableId] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<TableStatus | 'ALL'>('ALL')
   const [currentPage, setCurrentPage] = useState(1)
   const PAGE_SIZE = 10
+  const [collapsedZones, setCollapsedZones] = useState<Record<string, boolean>>({})
 
   // Autoriser admin, manager et waiter (serveur)
   useRequireRole(['admin', 'manager', 'waiter', 'super_admin'] as any, '/dashboard')
@@ -332,6 +409,17 @@ export function TablesPage() {
     return areas
   }, [tables])
 
+  // Regroupement des tables par zone pour la vue Grille (inspirée de la maquette)
+  const tablesByZone = useMemo(() => {
+    const groups: Record<string, RestaurantTable[]> = {}
+    filteredTablesForGrouping(tables).forEach(table => {
+      const zone = table.zone || 'Sans zone'
+      if (!groups[zone]) groups[zone] = []
+      groups[zone].push(table)
+    })
+    return groups
+  }, [tables])
+
   // Mise à jour du statut d'une table
   const handleStatusChange = async (id: string, newStatus: TableStatus) => {
     setIsProcessing(true)
@@ -439,6 +527,23 @@ export function TablesPage() {
     return matchesSearch && matchesStatus
   })
 
+  function filteredTablesForGrouping(all: RestaurantTable[]) {
+    return (all || []).filter(table => {
+      const matchesSearch = searchTerm === '' ||
+        table.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        table.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (table.zone && table.zone.toLowerCase().includes(searchTerm.toLowerCase()))
+      const matchesStatus = statusFilter === 'ALL' || table.status === statusFilter
+      return matchesSearch && matchesStatus && table.isActive
+    })
+  }
+
+  // Table actuellement sélectionnée pour le panneau de détails (vue Grille)
+  const activeDetailTable = useMemo(
+    () => (tables || []).find(t => t.id === selectedTableId) || null,
+    [tables, selectedTableId]
+  )
+
   // Pagination
   const totalPages = Math.ceil(filteredTables.length / PAGE_SIZE)
   const paginatedTables = useMemo(() => {
@@ -524,6 +629,38 @@ export function TablesPage() {
     )
   }
 
+  // Rendu d'une carte table pour le mode Grille, inspiré de la maquette :
+  // fond teinté selon le statut, contour d'accent sur la table sélectionnée,
+  // et bascule de statut directement visible au clic.
+  const GridTableCard = ({ table }: { table: RestaurantTable }) => {
+    const config = statusConfig[table.status]
+    const StatusIcon = config.icon
+    const isSelected = selectedTableId === table.id
+
+    return (
+      <button
+        type="button"
+        onClick={() => setSelectedTableId(table.id)}
+        className={cn(
+          "text-left rounded-sm border p-3 transition-all hover:shadow-md",
+          config.card,
+          isSelected ? "border-2 border-orange-500 ring-2 ring-orange-500/10 shadow-md" : "border"
+        )}
+      >
+        <div className="flex items-center justify-between">
+          <span className={cn("font-bold text-sm", config.cardAccent)}>Table {table.number}</span>
+          <StatusIcon className={cn("h-3.5 w-3.5", config.cardAccent)} />
+        </div>
+        <p className={cn("text-xs mt-1.5", config.cardAccent)}>
+          {table.capacity} place{table.capacity > 1 ? 's' : ''} · {config.label}
+        </p>
+        {table.name && (
+          <p className="text-[11px] text-slate-400 mt-0.5 truncate">{table.name}</p>
+        )}
+      </button>
+    )
+  }
+
   if (authLoading || (isFetching && tables.length === 0)) {
     return (
       <DashboardLayout>
@@ -548,17 +685,26 @@ export function TablesPage() {
           <p className="text-sm text-slate-500">Plan de salle, configuration des zones et génération de QR Codes.</p>
         </div>
         <div className="flex items-center gap-2">
-          {/* Toggle Plan / Liste */}
+          {/* Toggle Grille / Plan / Liste */}
           <div className="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-1">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={cn("p-1.5 rounded-md text-xs font-medium transition-colors", viewMode === 'grid' ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-900")}
+              title="Vue par zones"
+            >
+              <Grid3x3 className="h-4 w-4" />
+            </button>
             <button
               onClick={() => setViewMode('plan')}
               className={cn("p-1.5 rounded-md text-xs font-medium transition-colors", viewMode === 'plan' ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-900")}
+              title="Plan interactif"
             >
               <LayoutGrid className="h-4 w-4" />
             </button>
             <button
               onClick={() => setViewMode('list')}
               className={cn("p-1.5 rounded-md text-xs font-medium transition-colors", viewMode === 'list' ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-900")}
+              title="Vue liste"
             >
               <List className="h-4 w-4" />
             </button>
@@ -630,7 +776,7 @@ export function TablesPage() {
       )}
 
       {/* Filtres */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input
@@ -653,19 +799,184 @@ export function TablesPage() {
         </select>
       </div>
 
+      {/* Légende des statuts, commune aux vues Grille et Plan */}
+      {(viewMode === 'grid' || viewMode === 'plan') && (
+        <div className="flex flex-wrap gap-4 mb-6 text-xs text-slate-500">
+          {statusOptions.map(status => {
+            const config = statusConfig[status]
+            return (
+              <button
+                key={status}
+                onClick={() => setStatusFilter(prev => prev === status ? 'ALL' : status)}
+                className={cn(
+                  "flex items-center gap-1.5 px-2 py-1 rounded-full border transition-colors",
+                  statusFilter === status ? config.badge : "border-transparent hover:bg-slate-50"
+                )}
+              >
+                <span className={cn("h-2.5 w-2.5 rounded-full", config.bg)} />
+                {config.label}
+              </button>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Mode Grille : disposition par zones, inspirée de la maquette */}
+      {viewMode === 'grid' && (
+        <div className="space-y-6 mb-6">
+          {Object.keys(tablesByZone).length === 0 && (
+            <div className="bg-white rounded-sm border border-slate-200 p-10 text-center">
+              <p className="text-slate-400 text-sm">Aucune table ne correspond aux filtres actuels.</p>
+            </div>
+          )}
+
+          {Object.entries(tablesByZone).map(([zoneName, zoneTables]) => {
+            const theme = ZONE_THEMES[zoneName] || ZONE_THEMES.default
+            const isCollapsed = !!collapsedZones[zoneName]
+            const freeInZone = zoneTables.filter(t => t.status === 'FREE').length
+            const occupiedInZone = zoneTables.filter(t => t.status === 'OCCUPIED').length
+            const occupancyRate = zoneTables.length > 0 ? Math.round((occupiedInZone / zoneTables.length) * 100) : 0
+            return (
+              <div key={zoneName} className={cn("rounded-sm border bg-white overflow-hidden", theme.border)}>
+                <button
+                  type="button"
+                  onClick={() => setCollapsedZones(prev => ({ ...prev, [zoneName]: !prev[zoneName] }))}
+                  className={cn("w-full flex items-center justify-between gap-2 px-4 md:px-5 py-3 transition-colors hover:brightness-[0.99]", theme.bg)}
+                  aria-expanded={!isCollapsed}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <MapPin className={cn("h-4 w-4 shrink-0", theme.color)} />
+                    <h2 className={cn("text-sm font-bold uppercase tracking-wide truncate", theme.color)}>{zoneName}</h2>
+                    <span className="text-xs text-slate-400 font-medium shrink-0">({zoneTables.length})</span>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="hidden sm:inline text-[11px] font-semibold text-slate-500">
+                      {freeInZone} libres · {occupiedInZone} occupées
+                    </span>
+                    {isCollapsed
+                      ? <ChevronDown className="h-4 w-4 text-slate-400" />
+                      : <ChevronUp className="h-4 w-4 text-slate-400" />}
+                  </div>
+                </button>
+
+                {/* Barre d'occupation de la zone */}
+                <div className="h-1 w-full bg-slate-100">
+                  <div
+                    className={cn("h-full transition-all duration-500", theme.bar)}
+                    style={{ width: `${occupancyRate}%` }}
+                  />
+                </div>
+
+                {!isCollapsed && (
+                  <div className="p-4 md:p-5 border-t border-slate-100">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                      {zoneTables.map(table => (
+                        <GridTableCard key={table.id} table={table} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+
+          {/* Panneau de détails de la table sélectionnée + gestion rapide du statut */}
+          {activeDetailTable && (
+            <div className="bg-white rounded-sm border border-slate-200 p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-bold text-slate-900">
+                  Table {activeDetailTable.number} — détails
+                </h2>
+                <button
+                  onClick={() => setSelectedTableId(null)}
+                  className="text-slate-400 hover:text-slate-600"
+                  aria-label="Fermer les détails"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="grid sm:grid-cols-3 gap-4 mb-4 text-sm">
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">Statut actuel</p>
+                  <span className={cn("inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-semibold border", statusConfig[activeDetailTable.status].badge)}>
+                    {statusConfig[activeDetailTable.status].label}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">Capacité</p>
+                  <p className="font-semibold text-slate-900">{activeDetailTable.capacity} personnes</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">Emplacement</p>
+                  <p className="font-semibold text-slate-900">{activeDetailTable.zone || 'Non définie'}</p>
+                </div>
+              </div>
+
+              {/* Changement de statut en un clic, avec libellés d'action explicites */}
+              <p className="text-xs text-slate-500 mb-2">Changer le statut</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {statusOptions.map(status => {
+                  const config = statusConfig[status]
+                  const StatusIcon = config.icon
+                  const isCurrent = activeDetailTable.status === status
+                  return (
+                    <button
+                      key={status}
+                      disabled={isProcessing || isCurrent}
+                      onClick={() => handleStatusChange(activeDetailTable.id, status)}
+                      className={cn(
+                        "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm text-xs font-semibold border transition-colors disabled:cursor-default",
+                        isCurrent ? config.badge : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                      )}
+                    >
+                      <StatusIcon className="h-3.5 w-3.5" />
+                      {config.label}
+                    </button>
+                  )
+                })}
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setTableToPreview(activeDetailTable)
+                    setIsPreviewOpen(true)
+                  }}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 border border-slate-200 text-slate-600 text-xs font-semibold rounded-sm hover:bg-slate-50"
+                >
+                  <Eye className="h-3.5 w-3.5" /> QR Code
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedTable(activeDetailTable)
+                    setIsEditModalOpen(true)
+                  }}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 border border-slate-200 text-slate-600 text-xs font-semibold rounded-sm hover:bg-slate-50"
+                >
+                  <Edit2 className="h-3.5 w-3.5" /> Modifier
+                </button>
+                <button
+                  onClick={() => handleStatusChange(
+                    activeDetailTable.id,
+                    activeDetailTable.status === 'FREE' ? 'OCCUPIED' : 'FREE'
+                  )}
+                  disabled={isProcessing}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 bg-orange-600 text-white text-xs font-semibold rounded-sm hover:bg-orange-700"
+                >
+                  {statusConfig[activeDetailTable.status].action}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Mode Plan */}
       {viewMode === 'plan' && (
         <div className="bg-white rounded-sm border border-slate-200 p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-slate-900">Plan Interactif</h2>
-            <div className="flex flex-wrap gap-3 text-xs text-slate-500">
-              {Object.entries(statusConfig).map(([status, config]) => (
-                <div key={status} className="flex items-center gap-1.5">
-                  <span className={cn("h-2 w-2 rounded-full", config.bg)} />
-                  <span>{config.label}</span>
-                </div>
-              ))}
-            </div>
           </div>
 
           <div 
@@ -1017,15 +1328,27 @@ export function TablesPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">Statut</label>
-                <select 
-                  className="w-full px-3 py-2 border border-slate-200 rounded-sm text-sm focus:outline-none focus:border-orange-500 bg-white"
-                  value={selectedTable.status}
-                  onChange={e => setSelectedTable({...selectedTable, status: e.target.value as TableStatus})}
-                >
-                  {statusOptions.map(status => (
-                    <option key={status} value={status}>{statusConfig[status].label}</option>
-                  ))}
-                </select>
+                <div className="grid grid-cols-2 gap-2">
+                  {statusOptions.map(status => {
+                    const config = statusConfig[status]
+                    const StatusIcon = config.icon
+                    const isChosen = selectedTable.status === status
+                    return (
+                      <button
+                        key={status}
+                        type="button"
+                        onClick={() => setSelectedTable({ ...selectedTable, status })}
+                        className={cn(
+                          "inline-flex items-center gap-1.5 px-3 py-2 rounded-sm text-xs font-semibold border transition-colors",
+                          isChosen ? config.badge : "border-slate-200 text-slate-500 hover:bg-slate-50"
+                        )}
+                      >
+                        <StatusIcon className="h-3.5 w-3.5" />
+                        {config.label}
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
 
               <div className="flex items-center gap-3">

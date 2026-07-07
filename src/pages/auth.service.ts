@@ -1168,6 +1168,15 @@ class AuthService {
     return this.request<any>('GET', `${ACCOUNTING_ENDPOINTS.PNL}?${params.toString()}`);
   }
 
+  // Journal OHADA (écritures comptables)
+  async getAccountingJournal(start?: string, end?: string): Promise<any[]> {
+    const params = new URLSearchParams();
+    if (start) params.set('start', start);
+    if (end) params.set('end', end);
+    const query = params.toString();
+    return this.request<any[]>('GET', query ? `/accounting/journal?${query}` : '/accounting/journal');
+  }
+
   async exportAccountingToExcel(type: 'pnl' | 'balance', startDate?: string, endDate?: string): Promise<void> {
     const token = this.getToken();
     const tenantId = this.getTenantId();

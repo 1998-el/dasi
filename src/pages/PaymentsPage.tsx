@@ -371,21 +371,26 @@ export function PaymentsPage() {
             <div className="space-y-3">
               <Label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Mode de paiement</Label>
               <div className="grid grid-cols-2 gap-2">
-                {(['CASH', 'CARD', 'ORANGE_MONEY', 'MTN_MONEY'] as PaymentMethod[]).map(m => (
-                  <button
-                    key={m} type="button"
-                    onClick={() => setFormData({...formData, method: m})}
-                    className={cn(
-                      "flex flex-col items-center gap-2 p-3 rounded-sm border text-xs font-bold transition-all",
-                      formData.method === m ? "bg-slate-900 border-slate-900 text-white" : "bg-white border-slate-200 text-slate-600 hover:border-orange-300"
-                    )}
-                  >
-                    {m === 'CASH' && <Banknote className="h-4 w-4" />}
-                    {m === 'CARD' && <CreditCard className="h-4 w-4" />}
-                    {(m === 'ORANGE_MONEY' || m === 'MTN_MONEY') && <Smartphone className="h-4 w-4" />}
-                    {METHOD_CONFIG[m].label}
-                  </button>
-                ))}
+                {(['CASH', 'CARD', 'ORANGE_MONEY', 'MTN_MONEY'] as PaymentMethod[]).map(m => {
+                  const isDisabled = m !== 'CASH'
+                  return (
+                    <button
+                      key={m} type="button" disabled={isDisabled}
+                      onClick={() => !isDisabled && setFormData({...formData, method: m})}
+                      className={cn(
+                        "flex flex-col items-center gap-2 p-3 rounded-sm border text-xs font-bold transition-all",
+                        isDisabled
+                          ? "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed"
+                          : formData.method === m ? "bg-slate-900 border-slate-900 text-white" : "bg-white border-slate-200 text-slate-600 hover:border-orange-300"
+                      )}
+                    >
+                      {m === 'CASH' && <Banknote className="h-4 w-4" />}
+                      {m === 'CARD' && <CreditCard className="h-4 w-4" />}
+                      {(m === 'ORANGE_MONEY' || m === 'MTN_MONEY') && <Smartphone className="h-4 w-4" />}
+                      {METHOD_CONFIG[m].label}
+                    </button>
+                  )
+                })}
               </div>
             </div>
 

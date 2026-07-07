@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ===================== ENUMS =====================
+
+enum JournalType {
+  VENTES
+  ACHATS
+  BANQUE
+  CAISSE
+  PAIE
+  DIVERS
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  ORANGE_MONEY
+  MTN_MONEY
+  BANK_TRANSFER
+  MIXED
+}
+
+enum AttendanceType {
+  CHECK_IN
+  CHECK_OUT
+}
+
+// ===================== TENANT =====================
+
+model Tenant {
+  id               String            @id @default(uuid())
+  name             String
+  sales            Sale[]
+  purchases        Purchase[]
+  pharmacyDispenses PharmacyDispense[]
+  journalEntries   JournalEntry[]
+  journalLines     JournalLine[]
+  employees        EmployeeProfile[]
+}
+
+// ===================== COMPTABILITE OHADA =====================
+
+model JournalEntry {
+  id          String       @id @default(uuid())
+  tenantId    String
+  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  reference   String
+  description String
+  journal     JournalType
+  createdAt   DateTime     @default(now())
+  lines       JournalLine[]
+
+  @@index([tenantId])
+  @@index([createdAt])
+}
+
+model JournalLine {
+  id             String       @id @default(uuid())
+  journalEntryId String
+  journalEntry   JournalEntry @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  tenantId       String
+  tenant         Tenant       @relation(fields: [tenantId], references: [id])
+  accountCode    String
+  label          String?
+  debit          Decimal?     @db.Decimal(14, 2)
+  credit         Decimal?     @db.Decimal(14, 2)
+  description    String?
+
+  @@index([tenantId])
+  @@index([accountCode])
+}
+
+// ===================== VENTES / ACHATS =====================
+
+model Sale {
+  id          String        @id @default(uuid())
+  tenantId    String
+  tenant      Tenant        @relation(fields: [tenantId], references: [id])
+  saleNumber  String
+  totalAmount Decimal       @db.Decimal(14, 2)
+  payments    SalePayment[]
+
+  @@index([tenantId])
+}
+
+model SalePayment {
+  id     String        @id @default(uuid())
+  saleId String
+  sale   Sale          @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  method PaymentMethod
+  amount Decimal       @db.Decimal(14, 2)
+
+  @@index([saleId])
+}
+
+model Supplier {
+  id        String     @id @default(uuid())
+  tenantId  String
+  name      String
+  purchases Purchase[]
+
+  @@index([tenantId])
+}
+
+model Purchase {
+  id             String   @id @default(uuid())
+  tenantId       String
+  tenant         Tenant   @relation(fields: [tenantId], references: [id])
+  purchaseNumber String
+  totalAmount    Decimal  @db.Decimal(14, 2)
+  supplierId     String?
+  supplier       Supplier? @relation(fields: [supplierId], references: [id])
+
+  @@index([tenantId])
+}
+
+model PharmacyDispense {
+  id            String   @id @default(uuid())
+  tenantId      String
+  tenant        Tenant   @relation(fields: [tenantId], references: [id])
+  dispenseNumber String
+  totalAmount   Decimal  @db.Decimal(14, 2)
+
+  @@index([tenantId])
+}
+
+// ===================== RH / PRÉSENCE =====================
+
+model EmployeeProfile {
+  id        String      @id @default(uuid())
+  tenantId  String
+  tenant    Tenant      @relation(fields: [tenantId], references: [id])
+  firstName String
+  lastName  String
+  status    String      @default("ACTIVE")
+  attendances Attendance[]
+
+  @@index([tenantId])
+}
+
+model Attendance {
+  id            String        @id @default(uuid())
+  tenantId      String
+  employeeId    String
+  employee      EmployeeProfile @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  type          AttendanceType
+  recordedById  String?
+  recordedByName String?
+  createdAt     DateTime      @default(now())
+
+  @@index([employeeId])
+  @@index([tenantId])
+}

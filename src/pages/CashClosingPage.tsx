@@ -91,7 +91,7 @@ export function CashClosingPage() {
               <Button 
                 disabled={isProcessing}
                 onClick={handleGenerateReport}
-                className="h-12 bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase px-8 gap-3"
+                className="h-12 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs uppercase px-8 gap-3"
               >
                 <Printer className="h-4 w-4" />
                 Générer & Télécharger PDF

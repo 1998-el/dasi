@@ -247,42 +247,47 @@ export function EmployeeDetailPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-50">
-                  {attendanceLogs.length > 0 ? attendanceLogs.map((log: any) => (
-                    <tr key={log.id} className="hover:bg-slate-50/50 transition-colors group">
-                      <td className="px-6 py-4">
-                        <div className="flex flex-col">
-                          <span className="font-bold text-slate-700">{new Date(log.timestamp).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
-                          <span className="text-[10px] text-slate-400 font-medium">{new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className={cn(
-                          "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase border",
-                          log.type === 'CHECK_IN' ? "bg-emerald-50 border-emerald-100 text-emerald-700" : "bg-red-50 border-red-100 text-red-700"
-                        )}>
-                          {log.type === 'CHECK_IN' ? <ArrowRight className="h-3 w-3" /> : <ArrowLeft className="h-3 w-3" />}
-                          {log.type === 'CHECK_IN' ? 'Entrée' : 'Sortie'}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                         <div className="flex items-center gap-1.5">
-                            <div className={cn("h-1.5 w-1.5 rounded-full", log.status === 'PRESENT' ? 'bg-emerald-500' : 'bg-slate-300')} />
-                            <span className="text-xs font-medium text-slate-600">{log.status}</span>
+                   {attendanceLogs.length > 0 ? attendanceLogs.map((log: any) => {
+                     const ts = log.timestamp || log.createdAt || log.time;
+                     const status = log.status || (log.type === 'CHECK_IN' ? 'PRESENT' : 'ABSENT');
+                     const recorder = log.recordedByName || log.markedBy || 'Système';
+                     return (
+                     <tr key={log.id} className="hover:bg-slate-50/50 transition-colors group">
+                       <td className="px-6 py-4">
+                         <div className="flex flex-col">
+                           <span className="font-bold text-slate-700">{ts ? new Date(ts).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }) : '—'}</span>
+                           <span className="text-[10px] text-slate-400 font-medium">{ts ? new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '—'}</span>
                          </div>
-                      </td>
+                       </td>
+                       <td className="px-6 py-4">
+                         <span className={cn(
+                           "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase border",
+                           log.type === 'CHECK_IN' ? "bg-emerald-50 border-emerald-100 text-emerald-700" : "bg-red-50 border-red-100 text-red-700"
+                         )}>
+                           {log.type === 'CHECK_IN' ? <ArrowRight className="h-3 w-3" /> : <ArrowLeft className="h-3 w-3" />}
+                           {log.type === 'CHECK_IN' ? 'Entrée' : 'Sortie'}
+                         </span>
+                       </td>
+                       <td className="px-6 py-4">
+                          <div className="flex items-center gap-1.5">
+                             <div className={cn("h-1.5 w-1.5 rounded-full", status === 'PRESENT' ? 'bg-emerald-500' : 'bg-slate-300')} />
+                             <span className="text-xs font-medium text-slate-600">{status}</span>
+                          </div>
+                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           <div className="h-6 w-6 rounded-full bg-slate-100 flex items-center justify-center text-[8px] font-bold text-slate-500 border border-slate-200 uppercase">
-                            {log.recordedByName?.split(' ').map((n: any) => n[0]).join('') || '?'}
+                             {recorder?.split(' ').map((n: any) => n[0]).join('') || '?'}
                           </div>
-                          <span className="text-xs font-medium text-slate-600">{log.recordedByName || 'Système'}</span>
+                          <span className="text-xs font-medium text-slate-600">{recorder}</span>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <span className="text-[10px] font-mono text-slate-300 uppercase">#{log.id.slice(-8)}</span>
                       </td>
-                    </tr>
-                  )) : (
+                     </tr>
+                      );
+                   }) : (
                     <tr>
                       <td colSpan={5} className="px-6 py-12 text-center text-slate-400 italic">
                         Aucune donnée de présence enregistrée pour cet employé.

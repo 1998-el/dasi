@@ -30,15 +30,21 @@ import { useToast, Toast } from '../components/ui/Toast'
 import { useAuth } from '../context/AuthContext'
 import { DeleteDialog } from '../components/ui/DeleteDialog'
 
-// Types basés sur @prisma/client via ProductsService
+// Types alignés sur l'enum ProductCategory du backend (Prisma)
 type ProductStatus = 'AVAILABLE' | 'UNAVAILABLE' | 'OUT_OF_STOCK' | 'DISCONTINUED';
-type ProductCategory = 'STARTER' | 'MAIN_COURSE' | 'DESSERT' | 'BEVERAGE' | 'SIDE' | 'OTHER';
+type ProductCategory =
+  | 'FOOD' | 'BEVERAGE' | 'DESSERT' | 'OTHER' | 'STARTER' | 'MAIN_COURSE' | 'DRINK'
+  | 'COCKTAIL' | 'WINE' | 'BEER' | 'FAST_FOOD' | 'BREAKFAST' | 'SIDE_DISH' | 'SAUCE'
+  | 'MATERIEL_MEDICAL' | 'CARRELAGE' | 'PEINTURE' | 'PLOMBERIE' | 'ELECTRICITE'
+  | 'OUTILLAGE' | 'QUINCAILLERIE' | 'MENUISERIE' | 'DIAGNOSTIC' | 'ALIMENTAIRE'
+  | 'ENTRETIEN' | 'AUTRES' | 'DIVERS';
 
 interface Product {
   id: string;
   name: string;
   sku: string;
-  category: ProductCategory;
+  category?: ProductCategory;        // Relation Category (nom)
+  categoryEnum?: ProductCategory;    // Enum persisté côté backend (utilisé par les filtres)
   price: number;
   costPrice: number;
   stock: number;
@@ -55,12 +61,59 @@ interface Product {
 }
 
 const CATEGORY_LABELS: Record<ProductCategory, string> = {
+  // Restaurant
   STARTER: 'Entrées',
   MAIN_COURSE: 'Plats',
   DESSERT: 'Desserts',
   BEVERAGE: 'Boissons',
-  SIDE: 'Accompagnements',
-  OTHER: 'Autres'
+  DRINK: 'Boissons',
+  COCKTAIL: 'Cocktails',
+  WINE: 'Vins',
+  BEER: 'Bières',
+  BREAKFAST: 'Petit-déjeuner',
+  FAST_FOOD: 'Fast-food',
+  SIDE_DISH: 'Accompagnements',
+  SAUCE: 'Sauces',
+  FOOD: 'Autres plats',
+  // Retail / Pharmacy
+  ALIMENTAIRE: 'Alimentaire',
+  ENTRETIEN: 'Entretien',
+  AUTRES: 'Autres',
+  DIVERS: 'Divers',
+  MATERIEL_MEDICAL: 'Matériel médical',
+  // Bricolage / Quincaillerie (valeurs enum existantes)
+  CARRELAGE: 'Carrelage',
+  PEINTURE: 'Peinture',
+  PLOMBERIE: 'Plomberie',
+  ELECTRICITE: 'Électricité',
+  OUTILLAGE: 'Outillage',
+  QUINCAILLERIE: 'Quincaillerie',
+  MENUISERIE: 'Menuiserie',
+  DIAGNOSTIC: 'Diagnostic',
+  OTHER: 'Autres',
+};
+
+// Catégories proposées selon le métier (toujours des valeurs valides de l'enum ProductCategory)
+const CATEGORY_OPTIONS_BY_TYPE: Record<string, ProductCategory[]> = {
+  RESTAURANT: ['STARTER', 'MAIN_COURSE', 'DESSERT', 'BEVERAGE', 'SIDE_DISH', 'SAUCE', 'BREAKFAST', 'FAST_FOOD', 'FOOD', 'OTHER'],
+  RETAIL: ['ALIMENTAIRE', 'ENTRETIEN', 'AUTRES', 'DIVERS', 'MATERIEL_MEDICAL'],
+  PHARMACY: ['MATERIEL_MEDICAL', 'ALIMENTAIRE', 'ENTRETIEN', 'AUTRES', 'DIVERS'],
+};
+
+// Placeholders du formulaire "Nouveau Produit" adaptés au métier
+const PRODUCT_PLACEHOLDERS: Record<string, { name: string; description: string }> = {
+  RESTAURANT: {
+    name: 'Ex: Ndolé spécial, Jus de mangue...',
+    description: 'Ingrédients, allergènes ou détails particuliers...',
+  },
+  RETAIL: {
+    name: 'Ex: Savon, Riz 5kg, T-shirt...',
+    description: 'Marque, caractéristiques ou détails produit...',
+  },
+  PHARMACY: {
+    name: 'Ex: Paracétamol 500mg, Bandelette...',
+    description: 'DCI, posologie ou précautions d\'emploi...',
+  },
 };
 
 const STATUS_CONFIG: Record<ProductStatus, { label: string; badge: string }> = {
@@ -89,30 +142,12 @@ export function ProductsPage() {
   const { businessConfig } = useAuth()
   const { showError, showSuccess, toast, clear } = useToast()
 
-  // Adaptation dynamique des libellés de catégories selon le métier
-  const categoryLabels = useMemo(() => {
-    if (businessConfig.type === 'PHARMACY') {
-      return {
-        STARTER: 'Parapharmacie',
-        MAIN_COURSE: 'Médicaments',
-        DESSERT: 'Compléments',
-        BEVERAGE: 'Sirops / Solutions',
-        SIDE: 'Matériel Médical',
-        OTHER: 'Autres'
-      }
-    }
-    if (businessConfig.type === 'RETAIL') {
-      return {
-        STARTER: 'Alimentaire',
-        MAIN_COURSE: 'Articles / Produits',
-        DESSERT: 'Entretien',
-        BEVERAGE: 'Boissons',
-        SIDE: 'Accessoires',
-        OTHER: 'Divers'
-      }
-    }
-    return CATEGORY_LABELS // Valeurs par défaut pour RESTAURANT
-  }, [businessConfig.type])
+  // Catégories cohérentes avec le métier (source unique de vérité)
+  const categoryOptions = useMemo(
+    () => CATEGORY_OPTIONS_BY_TYPE[businessConfig.type] || CATEGORY_OPTIONS_BY_TYPE.RESTAURANT,
+    [businessConfig.type]
+  )
+  const placeholders = PRODUCT_PLACEHOLDERS[businessConfig.type] || PRODUCT_PLACEHOLDERS.RESTAURANT
 
   const [products, setProducts] = useState<Product[]>([])
   const [stats, setStats] = useState<ProductStats | null>(null)
@@ -237,7 +272,7 @@ export function ProductsPage() {
       name: product.name,
       sku: product.sku,
       description: product.description || '',
-      category: product.category,
+      category: (product.categoryEnum || product.category || 'MAIN_COURSE') as ProductCategory,
       price: product.price,
       costPrice: product.costPrice,
       stock: product.stock,
@@ -318,8 +353,8 @@ export function ProductsPage() {
             onChange={(e) => setCategoryFilter(e.target.value)}
           >
             <option value="ALL">Toutes catégories</option>
-            {Object.entries(categoryLabels).map(([val, label]) => (
-              <option key={val} value={val}>{label}</option>
+            {categoryOptions.map((val) => (
+              <option key={val} value={val}>{CATEGORY_LABELS[val]}</option>
             ))}
           </select>
 
@@ -398,7 +433,7 @@ export function ProductsPage() {
                 <div className="space-y-3">
                   <div className="flex flex-col">
                     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Catégorie</span>
-                    <span className="text-xs text-slate-700 font-medium">{categoryLabels[product.category]}</span>
+                    <span className="text-xs text-slate-700 font-medium">{CATEGORY_LABELS[product.categoryEnum as ProductCategory] || CATEGORY_LABELS[product.category as ProductCategory] || '—'}</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Stock</span>
@@ -478,6 +513,7 @@ export function ProductsPage() {
                 <Label className="text-[10px] font-bold text-slate-500 uppercase">Désignation</Label>
                 <Input 
                   required 
+                  placeholder={placeholders.name}
                   className="h-10 rounded-sm border-slate-200" 
                   value={formData.name} 
                   onChange={e => {
@@ -554,15 +590,15 @@ export function ProductsPage() {
                 className="w-full p-3 border border-slate-200 rounded-sm text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 h-24 resize-none"
                 value={formData.description}
                 onChange={e => setFormData({...formData, description: e.target.value})}
-                placeholder="Ingrédients, allergènes ou détails particuliers..."
+                placeholder={placeholders.description}
               />
             </div>
 
             <div className="space-y-1.5">
               <Label className="text-[10px] font-bold text-slate-500 uppercase">Catégorie</Label>
               <select className="w-full h-10 px-3 border border-slate-200 rounded-sm text-sm focus:outline-none focus:border-orange-500 bg-white" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value as ProductCategory})}>
-                {Object.entries(categoryLabels).map(([v, l]) => (
-                  <option key={v} value={v}>{l}</option>
+                {categoryOptions.map((v) => (
+                  <option key={v} value={v}>{CATEGORY_LABELS[v]}</option>
                 ))}
               </select>
             </div>

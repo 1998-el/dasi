@@ -35,12 +35,13 @@ export function SuppliersPage() {
 
   const categories = useMemo(() => {
     if (businessConfig.type === 'PHARMACY') {
-      return ["Laboratoires", "Grossistes Répartiteurs", "Matériel Médical", "Consommables"];
+      return ["Laboratoires", "Grossistes Répartiteurs", "Parapharmacie", "Matériel Médical", "Consommables", "Médicaments"];
     }
     if (businessConfig.type === 'RESTAURANT') {
-      return ["Boissons", "Nourriture / Frais", "Entretien", "Mobilier"];
+      return ["Boissons", "Nourriture / Frais", "Épicerie / Surgelés", "Boulangerie / Pâtisserie", "Entretien / Hygiène", "Mobilier / Matériel", "Emballages / Consommables"];
     }
-    return ["Grossistes", "Logistique", "Emballage", "Divers"];
+    // RETAIL (boutique / magasin général)
+    return ["Alimentaire", "Boissons", "Hygiène / Beauté", "Vêtements / Textile", "Électronique", "Décoration / Maison", "Emballages", "Divers"];
   }, [businessConfig.type]);
 
   const fetchSuppliers = useCallback(async () => {

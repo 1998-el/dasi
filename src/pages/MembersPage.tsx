@@ -170,7 +170,7 @@ export function MembersPage() {
             setDrawerMode('manual')
             setIsDrawerOpen(true)
           }}
-            className="bg-gray-500  hover:bg-orange-600  text-white h-10 rounded-sm flex items-center gap-2 transition-all font-bold uppercase text-[10px] tracking-widest px-6"
+            className="bg-orange-600 hover:bg-orange-700  text-white h-10 rounded-sm flex items-center gap-2 transition-all font-bold uppercase text-[10px] tracking-widest px-6"
           >
             <UserPlus className="h-4 w-4" />
             Ajouter un membre
@@ -364,7 +364,7 @@ export function MembersPage() {
                 <Button variant="outline" className="flex-1 rounded-sm font-black uppercase text-[10px] tracking-widest" onClick={() => setIsDrawerOpen(false)}>Annuler</Button>
                 <Button 
                   disabled={isProcessing || !formData.email}
-                  className="flex-[2] bg-slate-900 hover:bg-orange-600 text-white rounded-sm font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all shadow-lg" 
+                  className="flex-[2] bg-orange-600 hover:bg-orange-700 text-white rounded-sm font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all shadow-lg" 
                   onClick={handleCreateMember}
                 >
                   {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}

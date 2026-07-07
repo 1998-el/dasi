@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary-orange: #fb781e;
+  --color-primary-orange: #10367d;
   --color-primary-blue: #1067a8;
   --color-primary-yellow: #fabb10;
   --color-primary-black: #1A1A1A;
@@ -16,6 +16,22 @@
   --font-sans: 'Inter', 'Noto Sans KR', 'Pretendard', 'SUIT', 'system-ui', 'sans-serif';
 
   --animate-fade-in: fadeIn 0.3s ease-in-out;
+
+  /* Replaced orange palette with blues anchored at #10367d */
+  --color-orange-50: #eef2f9;
+  --color-orange-100: #d5e0f0;
+  --color-orange-200: #aac2e1;
+  --color-orange-300: #7a9fd0;
+  --color-orange-400: #4a78ba;
+  --color-orange-500: #2c579c;
+  --color-orange-600: #10367d;
+  --color-orange-700: #0c2a63;
+  --color-orange-800: #091f4a;
+  --color-orange-900: #061431;
+  --color-orange-950: #030b1a;
+
+  /* Inner shadow token (blue #10367d) */
+  --shadow-inner-blue: inset 0 1px 0 0 rgba(255, 255, 255, 0.18), inset 0 -3px 8px 0 rgba(6, 20, 49, 0.55);
 }
 
 @keyframes fadeIn {
@@ -41,6 +57,18 @@ body {
   color: var(--color-primary-black);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Inner shadow utility (blue #10367d) */
+@layer utilities {
+  .shadow-inner-blue {
+    box-shadow: var(--shadow-inner-blue);
+  }
+}
+
+/* Apply inner shadow to the primary blue buttons */
+.bg-orange-600 {
+  box-shadow: var(--shadow-inner-blue);
 }
 
 /* Custom scrollbar */

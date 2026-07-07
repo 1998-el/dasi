@@ -43,12 +43,13 @@ interface TopProduct {
 
 interface RecentOrder {
   id: string
-  orderNumber: string
-  tableNumber: string
+  number: string
+  type: string
   totalAmount: number
   status: string
-  orderTime: string
-  customerName?: string
+  date: string
+  customer: string
+  reference: string
 }
 
 const statusLabels: Record<string, { key: string; color: string }> = {
@@ -226,6 +227,13 @@ export function DashboardPage() {
       : t('dashboard.alerts.no_pending')
   }
 
+  const BusinessIcon = businessConfig.type === 'RETAIL' ? ShoppingCart : businessConfig.type === 'PHARMACY' ? Stethoscope : ChefHat
+  const activityLabel = businessConfig.type === 'RESTAURANT'
+    ? restaurantStatus.currentService
+    : businessConfig.type === 'RETAIL'
+      ? t('dashboard.business_retail', 'Boutique')
+      : t('dashboard.business_pharmacy', 'Pharmacie')
+
   return (
     <DashboardLayout>
       {/* Header section */}
@@ -264,48 +272,55 @@ export function DashboardPage() {
       </div>
 
 
-      {/* Info Banner / Alert Box */}
-      {restaurantStatus.isOpen && (
-        <div className="mb-8 p-5 bg-gray-100 border border-orange-100 rounded-sm shadow-none flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
-          
-          {/* Motif décoratif discret */}
-          <div 
-            className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-            style={{ 
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239a3412' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 0h40v2H2v38H0V0zm40 40h40v2H42v38h-2V40zm0-40h2v38h38v2H40V0zM0 40h2v38h38v2H0V40z'/%3E%3C/g%3E%3C/svg%3E")`,
-              backgroundSize: '40px 40px'
-            }} 
-          />
+      {/* Info Banner — carte héro businessType-aware */}
+      <div className="relative mb-8 overflow-hidden rounded-sm border border-[#10367d]/10 bg-gradient-to-br from-[#10367d] to-[#0c2a63] text-white shadow-[0_18px_40px_-18px_rgba(16,54,125,0.65)]">
+        {/* Halos décoratifs */}
+        <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-10 h-52 w-52 rounded-full bg-[#3f7fc4]/20 blur-3xl" />
 
-          <div className="absolute -right-10 -top-10 w-48 h-48  rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="flex items-start gap-4 relative z-10">
+        <div className="relative z-10 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+          {/* Identité + statut */}
+          <div className="flex items-center gap-4">
+            {/* <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-lg font-bold ring-1 ring-white/20 backdrop-blur">
+              {(user?.name || 'U').charAt(0).toUpperCase()}
+            </div> */}
             <div>
-              <div className="flex items-center gap-2.5 mb-1.5">
-                <h2 className="text-lg font-bold text-slate-900 tracking-tight">{greeting}, {user?.name}</h2>
-                <span className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 border border-emerald-100 rounded-full">
-                  {/* <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> */}
-                  {/* <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-tight">{t('dashboard.live_status')}</span> */}
-                </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight">{greeting}, {user?.name}</h2>
+                {/* <span className="flex items-center gap-1.5 rounded-full bg-emerald-400/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-tight text-emerald-300 ring-1 ring-emerald-400/30">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  {t('dashboard.live_status', 'En service')}
+                </span> */}
               </div>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-sm border border-orange-100">
-                  <ChefHat className="h-3 w-3" />
-                  {restaurantStatus.currentService}
-                </div>
-                <p className="text-sm text-slate-600 font-medium flex items-center gap-1.5">
-                  <AlertCircle className="h-4 w-4 text-orange-400" />
+              <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-xs font-bold ring-1 ring-white/20">
+                  <BusinessIcon className="h-3.5 w-3.5" />
+                  {activityLabel}
+                </span>
+                <p className="flex items-center gap-1.5 text-sm font-medium text-white/80">
+                  <AlertCircle className="h-4 w-4 text-white/70" />
                   {restaurantStatus.alertMessage}
                 </p>
               </div>
             </div>
           </div>
-          {/* <button className="relative z-10 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 shadow-sm hover:shadow-md transition-all px-6 py-2.5 rounded-sm shrink-0 self-end sm:self-center flex items-center gap-2 group">
-            {t('dashboard.manage_service')}
-            <TrendingUp className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-          </button> */}
+
+          {/* Mini-KPIs rapides */}
+          <div className="flex items-center gap-4 sm:gap-6">
+            <div className="text-right">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-white/60">{t('dashboard.sales_revenue')}</p>
+              <p className="text-lg font-bold tabular-nums">
+                {summary.totalSales?.toLocaleString() ?? '0'} <span className="text-xs font-medium text-white/60">FCFA</span>
+              </p>
+            </div>
+            <div className="h-10 w-px bg-white/15" />
+            <div className="text-right">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-white/60">{t('dashboard.pending_orders')}</p>
+              <p className="text-lg font-bold tabular-nums">{summary.pendingOrders ?? 0}</p>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
 
       {/* Grid Stats KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -420,23 +435,23 @@ export function DashboardPage() {
                 <tbody className="divide-y divide-slate-50">
                   {recentOrders.map((order) => (
                     <tr key={order.id} className="hover:bg-slate-50/50 transition-colors">
-                      <td className="px-6 py-4 text-xs font-mono font-bold text-slate-900">#{order.orderNumber}</td>
-                      {businessConfig.features.hasTables && <td className="px-6 py-4 text-xs font-bold text-slate-700">{t('dashboard.table')} {order.tableNumber}</td>}
-                      <td className="px-6 py-4 text-xs text-slate-600">
-                        {order.customerName || (businessConfig.type === 'PHARMACY' ? 'Patient' : t('dashboard.anonymous_customer'))}
-                      </td>
-                      <td className="px-6 py-4 text-xs text-right font-black text-slate-900">{order.totalAmount.toLocaleString()} FCFA</td>
-                      <td className="px-6 py-4">
-                        <span className={cn(
-                          "px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-tighter border border-transparent",
-                          statusLabels[order.status]?.color || "bg-slate-100 text-slate-600"
-                        )}>
-                          {t(statusLabels[order.status]?.key || order.status)}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-[10px] text-slate-400 font-medium">
-                        {new Date(order.orderTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </td>
+                      <td className="px-6 py-4 text-xs font-mono font-bold text-slate-900">#{order.number}</td>
+                       {businessConfig.features.hasTables && <td className="px-6 py-4 text-xs font-bold text-slate-700">{order.reference}</td>}
+                       <td className="px-6 py-4 text-xs text-slate-600">
+                         {order.customer || (businessConfig.type === 'PHARMACY' ? 'Patient' : t('dashboard.anonymous_customer'))}
+                       </td>
+                       <td className="px-6 py-4 text-xs text-right font-black text-slate-900">{order.totalAmount.toLocaleString()} FCFA</td>
+                       <td className="px-6 py-4">
+                         <span className={cn(
+                           "px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-tighter border border-transparent",
+                           statusLabels[order.status]?.color || "bg-slate-100 text-slate-600"
+                         )}>
+                           {t(statusLabels[order.status]?.key || order.status)}
+                         </span>
+                       </td>
+                       <td className="px-6 py-4 text-[10px] text-slate-400 font-medium">
+                         {new Date(order.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                       </td>
                     </tr>
                   ))}
                 </tbody>

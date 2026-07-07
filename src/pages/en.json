@@ -37,6 +37,8 @@
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Activity overview.",
+    "daily": "Daily",
+    "weekly": "Weekly",
     "welcome_morning": "Good morning",
     "welcome_evening": "Good evening",
     "occupancy_rate": "Occupancy Rate",

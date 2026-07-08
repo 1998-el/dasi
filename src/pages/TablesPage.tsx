@@ -120,12 +120,12 @@ const statusConfig: Record<TableStatus, {
   },
   CLEANING: {
     label: 'Nettoyage',
-    bg: 'bg-blue-500',
-    text: 'text-blue-700',
-    badge: 'bg-blue-50 border-blue-200 text-blue-800',
+    bg: 'bg-orange-500',
+    text: 'text-orange-700',
+    badge: 'bg-orange-50 border-orange-200 text-orange-800',
     icon: Sparkles,
-    card: 'bg-blue-50 border-blue-200',
-    cardAccent: 'text-blue-700',
+    card: 'bg-orange-50 border-orange-200',
+    cardAccent: 'text-orange-700',
     action: 'Marquer comme libre',
   },
   MAINTENANCE: {
@@ -157,11 +157,11 @@ const zoneOptions = ['Salle Principale', 'Terrasse', 'VIP / Salon', 'Bar', 'Mezz
 
 // Configuration visuelle des zones
 const ZONE_THEMES: Record<string, { color: string; bg: string; border: string; bar: string }> = {
-  'Salle Principale': { color: 'text-blue-600', bg: 'bg-blue-400/5', border: 'border-blue-200', bar: 'bg-blue-500' },
+  'Salle Principale': { color: 'text-orange-600', bg: 'bg-orange-400/5', border: 'border-orange-200', bar: 'bg-orange-500' },
   'Terrasse': { color: 'text-emerald-600', bg: 'bg-emerald-400/5', border: 'border-emerald-200', bar: 'bg-emerald-500' },
   'VIP / Salon': { color: 'text-purple-600', bg: 'bg-purple-400/5', border: 'border-purple-200', bar: 'bg-purple-500' },
   'Bar': { color: 'text-amber-600', bg: 'bg-amber-400/5', border: 'border-amber-200', bar: 'bg-amber-500' },
-  'Mezzanine': { color: 'text-indigo-600', bg: 'bg-indigo-400/5', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+  'Mezzanine': { color: 'text-orange-600', bg: 'bg-orange-400/5', border: 'border-orange-200', bar: 'bg-orange-500' },
   'Jardin': { color: 'text-lime-600', bg: 'bg-lime-400/5', border: 'border-lime-200', bar: 'bg-lime-500' },
   'default': { color: 'text-slate-600', bg: 'bg-slate-400/5', border: 'border-slate-200', bar: 'bg-slate-500' }
 }
@@ -569,7 +569,7 @@ export function TablesPage() {
           table.status === 'FREE' && (isDragging ? "bg-white border-orange-500" : "bg-white border-emerald-300 hover:border-emerald-500"),
           table.status === 'OCCUPIED' && (isDragging ? "bg-white border-orange-500" : "bg-white border-red-300 hover:border-red-500"),
           table.status === 'RESERVED' && (isDragging ? "bg-white border-orange-500" : "bg-white border-amber-300 hover:border-amber-500"),
-          table.status === 'CLEANING' && (isDragging ? "bg-white border-orange-500" : "bg-white border-blue-300 hover:border-blue-500"),
+          table.status === 'CLEANING' && (isDragging ? "bg-white border-orange-500" : "bg-white border-orange-300 hover:border-orange-500"),
           (table.status === 'MAINTENANCE' || table.status === 'OUT_OF_SERVICE') && "bg-slate-100 border-slate-300 opacity-60"
         )}
         style={{ left: `${table.positionX || 50}px`, top: `${table.positionY || 50}px` }}
@@ -755,9 +755,9 @@ export function TablesPage() {
             <p className="text-xs text-slate-500">Réservées</p>
             <p className="text-xl font-bold text-amber-600">{computedStats.reserved}</p>
           </div>
-          <div className="bg-white p-3 rounded-sm border-l-4 border-blue-500">
+          <div className="bg-white p-3 rounded-sm border-l-4 border-orange-500">
             <p className="text-xs text-slate-500">Nettoyage</p>
-            <p className="text-xl font-bold text-blue-600">{computedStats.cleaning}</p>
+            <p className="text-xl font-bold text-orange-600">{computedStats.cleaning}</p>
           </div>
           <div className="bg-white p-3 rounded-sm">
             <div className="flex justify-between items-center">
@@ -1027,8 +1027,8 @@ export function TablesPage() {
             <div className="absolute top-1/2 -right-1 -translate-y-1/2 flex flex-col items-center justify-center bg-orange-100 border-2 border-orange-200 w-8 h-32 rounded-l-2xl z-10">
               <span className="[writing-mode:vertical-lr] text-[9px] font-black uppercase tracking-widest text-orange-600 rotate-180">Cuisine</span>
             </div>
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-blue-100 border-2 border-blue-200 px-12 py-3 rounded-full z-10 shadow-inner flex items-center gap-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-blue-600">Comptoir Bar</span>
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-orange-100 border-2 border-orange-200 px-12 py-3 rounded-full z-10 shadow-inner flex items-center gap-2">
+              <span className="text-[10px] font-black uppercase tracking-widest text-orange-600">Comptoir Bar</span>
             </div>
 
             {/* Tables */}
@@ -1131,7 +1131,7 @@ export function TablesPage() {
                             setSelectedTable(table)
                             setIsEditModalOpen(true)
                           }}
-                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                          className="p-1.5 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-colors"
                         >
                           <Edit2 className="h-3.5 w-3.5" />
                         </button>

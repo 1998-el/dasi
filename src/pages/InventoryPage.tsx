@@ -365,7 +365,7 @@ export function InventoryPage() {
                       <div className={cn(
                         "p-2 rounded-full",
                         movement.type === 'IN' ? "bg-emerald-50 text-emerald-600" :
-                        movement.type === 'OUT' ? "bg-red-50 text-red-600" : "bg-blue-50 text-blue-600"
+                        movement.type === 'OUT' ? "bg-red-50 text-red-600" : "bg-orange-50 text-orange-600"
                       )}>
                         {movement.type === 'IN' ? <Plus className="h-4 w-4" /> :
                          movement.type === 'OUT' ? <Minus className="h-4 w-4" /> : <CalendarClock className="h-4 w-4" />}

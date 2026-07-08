@@ -3,8 +3,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary-orange: #10367d;
-  --color-primary-blue: #1067a8;
+  --color-primary-orange: #1f69e0;
+  --color-primary-blue: #1f69e0;
   --color-primary-yellow: #fabb10;
   --color-primary-black: #1A1A1A;
   --color-primary-white: #FFFFFF;
@@ -13,25 +13,26 @@
   --color-secondary-gray: #718096;
   --color-secondary-border: #E2E8F0;
 
+  --color-sidebar-bg: #e0e4ec;
+  --color-topbar-bg: #e0e4ec;
+
   --font-sans: 'Inter', 'Noto Sans KR', 'Pretendard', 'SUIT', 'system-ui', 'sans-serif';
 
   --animate-fade-in: fadeIn 0.3s ease-in-out;
 
-  /* Replaced orange palette with blues anchored at #10367d */
-  --color-orange-50: #eef2f9;
-  --color-orange-100: #d5e0f0;
-  --color-orange-200: #aac2e1;
-  --color-orange-300: #7a9fd0;
-  --color-orange-400: #4a78ba;
-  --color-orange-500: #2c579c;
-  --color-orange-600: #10367d;
-  --color-orange-700: #0c2a63;
-  --color-orange-800: #091f4a;
-  --color-orange-900: #061431;
-  --color-orange-950: #030b1a;
+  --color-orange-50: #eef3fd;
+  --color-orange-100: #dce6f9;
+  --color-orange-200: #b9cbf3;
+  --color-orange-300: #8aaae9;
+  --color-orange-400: #5a87df;
+  --color-orange-500: #3a6fd6;
+  --color-orange-600: #1f69e0;
+  --color-orange-700: #1954b8;
+  --color-orange-800: #134090;
+  --color-orange-900: #0d2c68;
+  --color-orange-950: #071d3d;
 
-  /* Inner shadow token (blue #10367d) */
-  --shadow-inner-blue: inset 0 1px 0 0 rgba(255, 255, 255, 0.18), inset 0 -3px 8px 0 rgba(6, 20, 49, 0.55);
+  --shadow-inner-blue: inset 0 1px 0 0 rgba(255, 255, 255, 0.18), inset 0 -3px 8px 0 rgba(31, 105, 224, 0.35);
 }
 
 @keyframes fadeIn {
@@ -59,7 +60,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Inner shadow utility (blue #10367d) */
+/* Inner shadow utility (blue #1f69e0) */
 @layer utilities {
   .shadow-inner-blue {
     box-shadow: var(--shadow-inner-blue);

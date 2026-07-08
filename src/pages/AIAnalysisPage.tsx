@@ -61,9 +61,9 @@ export function AIAnalysisPage() {
         </Card>
 
         {/* Optimisation Stock */}
-        <Card className="rounded-sm border-blue-100 bg-blue-50/20 shadow-none">
+        <Card className="rounded-sm border-orange-100 bg-orange-50/20 shadow-none">
           <CardHeader className="pb-2">
-            <CardTitle className="text-[10px] font-black uppercase text-blue-600 tracking-widest flex items-center gap-2">
+            <CardTitle className="text-[10px] font-black uppercase text-orange-600 tracking-widest flex items-center gap-2">
               <Target className="h-3 w-3" /> Optimisation Stocks
             </CardTitle>
           </CardHeader>

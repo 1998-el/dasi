@@ -24,7 +24,7 @@ import { useToast, Toast } from '../components/ui/Toast'
 import { authService } from './auth.service'
 
 // Couleurs standards pour la ventilation des dépenses
-const COLORS = ['bg-orange-500', 'bg-blue-500', 'bg-purple-500', 'bg-pink-500', 'bg-slate-400'];
+const COLORS = ['bg-orange-500', 'bg-orange-500', 'bg-purple-500', 'bg-pink-500', 'bg-slate-400'];
 
 export function AccountingPage() {
   const { t } = useTranslation()
@@ -53,7 +53,7 @@ export function AccountingPage() {
         setBalanceData(data)
       } else if (activeTab === 'reports') {
         const history = await authService.getZReportHistory()
-        setReportHistory(history)
+        setReportHistory(Array.isArray(history) ? history : [])
       } else if (activeTab === 'journal') {
         const data = await authService.getAccountingJournal()
         setJournalData(data || [])
@@ -160,45 +160,53 @@ export function AccountingPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <KPICard label={t('accounting.kpis.revenue')} value={totals.revenue} icon={DollarSign} trend="+12.5%" trendType="up" />
         <KPICard label={t('accounting.kpis.expenses')} value={totals.expenses} icon={Receipt} trend="+4.2%" trendType="down" color="text-red-600" />
-        <KPICard label={t('accounting.kpis.margin')} value={totals.grossMargin} icon={BarChart3} trend="34.2%" trendType="neutral" color="text-blue-600" />
+        <KPICard label={t('accounting.kpis.margin')} value={totals.grossMargin} icon={BarChart3} trend="34.2%" trendType="neutral" color="text-orange-600" />
         <KPICard label={t('accounting.kpis.net_profit')} value={totals.netProfit} icon={TrendingUp} trend="+18.4%" trendType="up" color="text-emerald-600" highlight />
       </div>
 
       {activeTab === 'pnl' ? (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card className="lg:col-span-2 rounded-sm border-slate-200 shadow-none overflow-hidden">
-          <CardHeader className="border-b border-slate-50 bg-slate-50/30">
+          <CardHeader className="border-b border-slate-50 bg-slate-50/30 px-4">
             <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-orange-500" />
               {t('accounting.sections.performance_trend')}
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-8">
-            <div className="h-64 flex items-end justify-between gap-4">
-              {pnlData.map((data, idx) => {
-                const max = 2500000
-                const revHeight = (data.revenue / max) * 100
-                const expHeight = (data.expenses / max) * 100
-                return (
-                  <div key={idx} className="flex-1 flex flex-col items-center group relative">
-                    <div className="w-full flex items-end justify-center gap-1 h-full border-b border-slate-100 pb-2">
-                      <div className="w-3 bg-orange-500 rounded-t-sm transition-all group-hover:opacity-80" style={{ height: `${revHeight}%` }} />
-                      <div className="w-3 bg-slate-300 rounded-t-sm transition-all group-hover:bg-slate-400" style={{ height: `${expHeight}%` }} />
-                    </div>
-                    <span className="text-[9px] font-bold text-slate-400 uppercase mt-3">{data.month.substring(0, 3)}.</span>
-                  </div>
-                )
-              })}
-            </div>
-            <div className="mt-8 flex justify-center gap-6">
-              <div className="flex items-center gap-2"><div className="w-3 h-3 bg-orange-500 rounded-sm" /><span className="text-[10px] font-bold text-slate-500 uppercase">{t('accounting.kpis.revenue')}</span></div>
-              <div className="flex items-center gap-2"><div className="w-3 h-3 bg-slate-300 rounded-sm" /><span className="text-[10px] font-bold text-slate-500 uppercase">{t('accounting.kpis.expenses')}</span></div>
-            </div>
-          </CardContent>
-        </Card>
+          <CardContent className="p-6">
+            {pnlData.length === 0 ? (
+              <div className="h-64 flex items-center justify-center">
+                <p className="text-xs text-slate-400 italic">Aucune donnée P&L disponible pour cette période.</p>
+              </div>
+            ) : (
+              <>
+                <div className="h-64 flex items-end justify-between gap-4">
+                  {pnlData.map((data, idx) => {
+                    const max = 2500000
+                    const revHeight = (data.revenue / max) * 100
+                    const expHeight = (data.expenses / max) * 100
+                    return (
+                      <div key={idx} className="flex-1 flex flex-col items-center group relative">
+                        <div className="w-full flex items-end justify-center gap-1 h-full border-b border-slate-100 pb-2">
+                          <div className="w-3 bg-orange-500 rounded-t-sm transition-all group-hover:opacity-80" style={{ height: `${revHeight}%` }} />
+                          <div className="w-3 bg-slate-300 rounded-t-sm transition-all group-hover:bg-slate-400" style={{ height: `${expHeight}%` }} />
+                        </div>
+                        <span className="text-[9px] font-bold text-slate-400 uppercase mt-3">{data.month.substring(0, 3)}.</span>
+                      </div>
+                    )
+                  })}
+                </div>
+                <div className="mt-8 flex justify-center gap-6">
+                  <div className="flex items-center gap-2"><div className="w-3 h-3 bg-orange-500 rounded-sm" /><span className="text-[10px] font-bold text-slate-500 uppercase">{t('accounting.kpis.revenue')}</span></div>
+                  <div className="flex items-center gap-2"><div className="w-3 h-3 bg-slate-300 rounded-sm" /><span className="text-[10px] font-bold text-slate-500 uppercase">{t('accounting.kpis.expenses')}</span></div>
+                </div>
+              </>
+            )}
+           </CardContent>
+         </Card>
 
-        <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
-          <CardHeader className="border-b border-slate-50 bg-slate-50/30">
+         <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
+          <CardHeader className="border-b border-slate-50 bg-slate-50/30 px-4">
             <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest flex items-center gap-2">
               <PieChart className="h-4 w-4 text-orange-500" />
               {t('accounting.sections.expense_structure')}
@@ -226,10 +234,10 @@ export function AccountingPage() {
         </Card>
 
         <Card className="lg:col-span-3 rounded-sm border-slate-200 shadow-none overflow-hidden">
-          <CardHeader className="border-b border-slate-50 bg-slate-50/30 py-3">
+          <CardHeader className="border-b border-slate-50 bg-slate-50/30 py-3 px-4">
              <div className="flex items-center justify-between">
                 <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest">{t('accounting.sections.monthly_breakdown')}</CardTitle>
-                <span className="text-[10px] font-bold text-slate-400 bg-white border border-slate-100 px-2 py-0.5 rounded-sm">Semestre 1 - 2026</span>
+                <span className="text-[10px] font-bold text-slate-400 bg-white border border-slate-100 px-2 py-0.5 rounded-sm">{pnlData.length} ligne{pnlData.length !== 1 ? 's' : ''}</span>
              </div>
           </CardHeader>
           <CardContent className="p-0 overflow-x-auto">
@@ -244,65 +252,77 @@ export function AccountingPage() {
                   <th className="px-6 py-3 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
-                {pnlData.map((data, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="px-6 py-4 font-bold text-slate-900 border-r border-slate-50">{data.month}</td>
-                    <td className="px-6 py-4 text-right font-black text-slate-800">{data.revenue.toLocaleString()} F</td>
-                    <td className="px-6 py-4 text-right font-medium text-slate-500">{data.expenses.toLocaleString()} F</td>
-                    <td className="px-6 py-4 text-right font-bold text-emerald-600">{(data.revenue - data.expenses).toLocaleString()} F</td>
-                    <td className="px-6 py-4 text-right font-medium text-slate-400">{data.tax.toLocaleString()} F</td>
-                    <td className="px-6 py-4 text-center"><button onClick={() => authService.downloadZReportPdf(selectedDate)} className="p-1.5 text-slate-400 hover:text-orange-600"><Printer className="h-3.5 w-3.5" /></button></td>
-                  </tr>
-                ))}
-                <tr className="bg-slate-900 text-white font-black">
-                   <td className="px-6 py-4 border-r border-slate-700 uppercase text-xs tracking-widest">TOTAL SEMESTRE</td>
-                   <td className="px-6 py-4 text-right">{totals.revenue.toLocaleString()} F</td>
-                   <td className="px-6 py-4 text-right opacity-70">{totals.expenses.toLocaleString()} F</td>
-                   <td className="px-6 py-4 text-right text-emerald-400">{(totals.revenue - totals.expenses).toLocaleString()} F</td>
-                   <td className="px-6 py-4 text-right opacity-70">{totals.tax.toLocaleString()} F</td>
-                   <td className="px-6 py-4" />
-                </tr>
-              </tbody>
+               <tbody className="divide-y divide-slate-50">
+                 {pnlData.length === 0 ? (
+                   <tr>
+                     <td colSpan={6} className="px-6 py-12 text-center text-slate-400 italic">Aucune donnée P&L disponible pour cette période.</td>
+                   </tr>
+                 ) : (
+                   <>
+                     {pnlData.map((data, idx) => (
+                       <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
+                         <td className="px-6 py-4 font-bold text-slate-900 border-r border-slate-50">{data.month}</td>
+                         <td className="px-6 py-4 text-right font-black text-slate-800">{data.revenue.toLocaleString()} F</td>
+                         <td className="px-6 py-4 text-right font-medium text-slate-500">{data.expenses.toLocaleString()} F</td>
+                         <td className="px-6 py-4 text-right font-bold text-emerald-600">{(data.revenue - data.expenses).toLocaleString()} F</td>
+                         <td className="px-6 py-4 text-right font-medium text-slate-400">{data.tax.toLocaleString()} F</td>
+                         <td className="px-6 py-4 text-center"><button onClick={() => authService.downloadZReportPdf(selectedDate)} className="p-1.5 text-slate-400 hover:text-orange-600"><Printer className="h-3.5 w-3.5" /></button></td>
+                       </tr>
+                     ))}
+                     <tr className="bg-slate-900 text-white font-black">
+                        <td className="px-6 py-4 border-r border-slate-700 uppercase text-xs tracking-widest">TOTAL SEMESTRE</td>
+                        <td className="px-6 py-4 text-right">{totals.revenue.toLocaleString()} F</td>
+                        <td className="px-6 py-4 text-right opacity-70">{totals.expenses.toLocaleString()} F</td>
+                        <td className="px-6 py-4 text-right text-emerald-400">{(totals.revenue - totals.expenses).toLocaleString()} F</td>
+                        <td className="px-6 py-4 text-right opacity-70">{totals.tax.toLocaleString()} F</td>
+                        <td className="px-6 py-4" />
+                     </tr>
+                   </>
+                 )}
+               </tbody>
             </table>
           </CardContent>
         </Card>
         </div>
-      ) : activeTab === 'balance' ? (
+        ) : activeTab === 'balance' ? (
         <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
-           <CardHeader className="border-b border-slate-50 bg-slate-50/30">
+           <CardHeader className="border-b border-slate-50 bg-slate-50/30 px-4">
               <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest">Balance Générale des Comptes (OHADA)</CardTitle>
-           </CardHeader>
-           <CardContent className="p-0">
-              <table className="w-full text-left border-collapse text-sm">
-                 <thead>
-                    <tr className="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400 border-b border-slate-100">
-                       <th className="px-6 py-3 border-r border-slate-100">N° Compte</th>
-                       <th className="px-6 py-3">Libellé</th>
-                       <th className="px-6 py-3 text-right">Débit</th>
-                       <th className="px-6 py-3 text-right">Crédit</th>
-                       <th className="px-6 py-3 text-right">Solde</th>
-                    </tr>
-                 </thead>
-                 <tbody className="divide-y divide-slate-50">
-                    {(balanceData?.accounts || []).map((acc: any, idx: number) => (
-                      <tr key={idx} className="hover:bg-slate-50/50">
-                         <td className="px-6 py-4 font-mono text-xs font-bold border-r border-slate-50">{acc.code}</td>
-                         <td className="px-6 py-4 font-medium text-slate-700">{acc.label}</td>
-                         <td className="px-6 py-4 text-right">{acc.debit.toLocaleString()} F</td>
-                         <td className="px-6 py-4 text-right">{acc.credit.toLocaleString()} F</td>
-                         <td className={cn("px-6 py-4 text-right font-black", acc.balance >= 0 ? "text-emerald-600" : "text-red-600")}>
-                            {acc.balance.toLocaleString()} F
-                         </td>
-                      </tr>
-                    ))}
-                 </tbody>
-              </table>
-           </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent className="p-0">
+               <table className="w-full text-left border-collapse text-sm">
+                  <thead>
+                     <tr className="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400 border-b border-slate-100">
+                        <th className="px-6 py-3 border-r border-slate-100">N° Compte</th>
+                        <th className="px-6 py-3">Libellé</th>
+                        <th className="px-6 py-3 text-right">Débit</th>
+                        <th className="px-6 py-3 text-right">Crédit</th>
+                        <th className="px-6 py-3 text-right">Solde</th>
+                     </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-50">
+                     {(balanceData?.accounts || []).length > 0 ? (balanceData.accounts || []).map((acc: any, idx: number) => (
+                       <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
+                          <td className="px-6 py-4 font-mono text-xs font-bold border-r border-slate-50">{acc.code}</td>
+                          <td className="px-6 py-4 font-medium text-slate-700">{acc.label}</td>
+                          <td className="px-6 py-4 text-right">{acc.debit.toLocaleString()} F</td>
+                          <td className="px-6 py-4 text-right">{acc.credit.toLocaleString()} F</td>
+                          <td className={cn("px-6 py-4 text-right font-black", acc.balance >= 0 ? "text-emerald-600" : "text-red-600")}>
+                             {acc.balance.toLocaleString()} F
+                          </td>
+                       </tr>
+                     )) : (
+                       <tr>
+                         <td colSpan={5} className="px-6 py-12 text-center text-slate-400 italic">Aucune écriture comptable enregistrée pour le moment.</td>
+                       </tr>
+                     )}
+                  </tbody>
+               </table>
+            </CardContent>
+         </Card>
        ) : activeTab === 'journal' ? (
         <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
-           <CardHeader className="border-b border-slate-50 bg-slate-50/30">
+           <CardHeader className="border-b border-slate-50 bg-slate-50/30 px-4">
               <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest">Journal Comptable (OHADA)</CardTitle>
            </CardHeader>
            <CardContent className="p-0 overflow-x-auto">
@@ -317,13 +337,13 @@ export function AccountingPage() {
                     </tr>
                  </thead>
                  <tbody className="divide-y divide-slate-50">
-                    {journalData.length > 0 ? journalData.map((entry: any) => {
-                      const total = (entry.lines || []).reduce(
-                        (acc: number, l: any) => acc + Number(l.debit ?? 0) + Number(l.credit ?? 0),
-                        0,
-                      ) / 2
-                      return (
-                        <tr key={entry.id} className="hover:bg-slate-50/50 align-top">
+                     {journalData.length > 0 ? journalData.map((entry: any) => {
+                       const total = (entry.lines || []).reduce(
+                         (acc: number, l: any) => acc + Number(l.debit ?? 0) + Number(l.credit ?? 0),
+                         0,
+                       ) / 2
+                       return (
+                         <tr key={entry.id} className="hover:bg-slate-50/50 transition-colors align-top">
                            <td className="px-6 py-4 font-mono text-xs font-bold text-slate-700">{entry.reference}</td>
                            <td className="px-6 py-4">
                              <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded-sm bg-orange-50 text-orange-700 border border-orange-100">
@@ -358,7 +378,7 @@ export function AccountingPage() {
        ) : activeTab === 'reports' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
-            <CardHeader className="border-b border-slate-50 bg-slate-50/30">
+            <CardHeader className="border-b border-slate-50 bg-slate-50/30 px-4">
               <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest flex items-center gap-2">
                 <Printer className="h-4 w-4 text-orange-500" />
                 Clôture de Caisse (Z-Report)
@@ -378,22 +398,26 @@ export function AccountingPage() {
           </Card>
 
           <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
-            <CardHeader className="border-b border-slate-50 bg-slate-50/30">
-              <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest">
-                Historique des Rapports
-              </CardTitle>
-            </CardHeader>
+          <CardHeader className="border-b border-slate-50 bg-slate-50/30 px-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest">Historique des Rapports</CardTitle>
+              <span className="text-[10px] font-bold text-slate-400 bg-white border border-slate-100 px-2 py-0.5 rounded-sm">{reportHistory.length} rapport{reportHistory.length !== 1 ? 's' : ''}</span>
+            </div>
+          </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
-                {reportHistory.length > 0 ? reportHistory.map((report) => (
-                  <div key={report.id} className="flex items-center justify-between p-3 border border-slate-100 rounded-sm bg-slate-50/50 group">
-                    <div className="flex flex-col">
-                      <span className="text-xs font-bold text-slate-700">Clôture du {new Date(report.date).toLocaleDateString()}</span>
-                      <span className="text-[9px] text-slate-400 font-mono">#{report.id.slice(-8)}</span>
+                {reportHistory.length > 0 ? reportHistory.map((report) => {
+                  if (!report?.id) return null;
+                  return (
+                    <div key={report.id} className="flex items-center justify-between p-3 border border-slate-100 rounded-sm bg-slate-50/50 group">
+                      <div className="flex flex-col">
+                        <span className="text-xs font-bold text-slate-700">Clôture du {new Date(report.date).toLocaleDateString()}</span>
+                        <span className="text-[9px] text-slate-400 font-mono">#{report.id.slice(-8)}</span>
+                      </div>
+                      <button onClick={() => authService.downloadZReportPdf(report.date)} className="p-2 text-slate-400 hover:text-orange-600 opacity-0 group-hover:opacity-100 transition-all"><Printer className="h-3.5 w-3.5" /></button>
                     </div>
-                    <button onClick={() => authService.downloadZReportPdf(report.date)} className="p-2 text-slate-400 hover:text-orange-600 opacity-0 group-hover:opacity-100 transition-all"><Printer className="h-3.5 w-3.5" /></button>
-                  </div>
-                )) : (
+                  );
+                }) : (
                   <p className="text-xs text-slate-400 italic text-center py-8">Aucun historique disponible.</p>
                 )}
               </div>
@@ -407,7 +431,7 @@ export function AccountingPage() {
 
 function KPICard({ label, value, icon: Icon, trend, trendType, color = "text-slate-900", highlight = false }: any) {
   return (
-    <Card className={cn("rounded-sm border-slate-200 p-5 shadow-none transition-all hover:border-slate-300", highlight && "bg-slate-50 border-orange-200")}>
+    <Card className={cn("rounded-sm border-slate-200 p-5 shadow-none transition-all hover:border-slate-300 hover:shadow-sm cursor-default", highlight && "bg-slate-50 border-orange-200")}>
       <div className="flex justify-between items-start mb-4">
         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{label}</span>
         <div className={cn("p-2 rounded-sm bg-white border border-slate-100", color)}>
@@ -419,7 +443,7 @@ function KPICard({ label, value, icon: Icon, trend, trendType, color = "text-sla
         <div className={cn(
           "flex items-center gap-0.5 text-[10px] font-black px-1.5 py-0.5 rounded-sm",
           trendType === 'up' ? "bg-emerald-50 text-emerald-700" : 
-          trendType === 'down' ? "bg-red-50 text-red-700" : "bg-blue-50 text-blue-700"
+          trendType === 'down' ? "bg-red-50 text-red-700" : "bg-orange-50 text-orange-700"
         )}>
           {trendType === 'up' ? <ArrowUpRight className="h-2.5 w-2.5" /> : 
            trendType === 'down' ? <ArrowDownRight className="h-2.5 w-2.5" /> : null}

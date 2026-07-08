@@ -382,7 +382,7 @@ export function ProductsPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Total Produits", value: stats?.total ?? 0, icon: Package, color: "text-blue-600", bg: "bg-blue-50" },
+          { label: "Total Produits", value: stats?.total ?? 0, icon: Package, color: "text-orange-600", bg: "bg-orange-50" },
           { label: "Alertes Stock", value: stats?.lowStock ?? 0, icon: AlertTriangle, color: "text-amber-600", bg: "bg-amber-50" },
           { label: "Valeur Stock", value: `${(stats?.totalValue ?? 0).toLocaleString()} FCFA`, icon: Tags, color: "text-emerald-600", bg: "bg-emerald-50" },
           { label: "Ruptures", value: stats?.outOfStock ?? 0, icon: Archive, color: "text-red-600", bg: "bg-red-50" },

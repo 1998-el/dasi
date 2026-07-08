@@ -315,7 +315,7 @@ export function HRPage() {
           {activeTab === 'overview' && (
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <StatCard label="Effectif Total" value={summary?.totalEmployees ?? 0} icon={Users} color="blue" />
+                <StatCard label="Effectif Total" value={summary?.totalEmployees ?? 0} icon={Users} color="orange" />
                 <StatCard label="Présents (Jour)" value={summary?.presentToday ?? 0} icon={LogIn} color="emerald" />
                 <StatCard label="En Congés" value={summary?.employeesOnLeave?.length ?? 0} icon={Calendar} color="orange" />
                 <StatCard label="Demandes en attente" value={summary?.pendingLeaveRequestsCount ?? 0} icon={AlertCircle} color="purple" />
@@ -763,9 +763,9 @@ export function HRPage() {
               />
             </div>
 
-            <div className="p-4 bg-blue-50 border border-blue-100 rounded-sm flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
-              <p className="text-[11px] text-blue-800 leading-relaxed font-medium">
+            <div className="p-4 bg-orange-50 border border-orange-100 rounded-sm flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-orange-600 shrink-0 mt-0.5" />
+              <p className="text-[11px] text-orange-800 leading-relaxed font-medium">
                 Cette demande sera envoyée pour approbation. Le solde de congés de l'employé sera débité automatiquement une fois la demande acceptée par un administrateur.
               </p>
             </div>
@@ -859,9 +859,9 @@ export function HRPage() {
               <Input type="date" required className="h-10 rounded-sm border-slate-200" value={employeeFormData.hireDate} onChange={e => setEmployeeFormData({...employeeFormData, hireDate: e.target.value})} />
             </div>
 
-            <div className="p-4 bg-blue-50 border border-blue-100 rounded-sm flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
-              <p className="text-[11px] text-blue-800 leading-relaxed font-medium">
+            <div className="p-4 bg-orange-50 border border-orange-100 rounded-sm flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-orange-600 shrink-0 mt-0.5" />
+              <p className="text-[11px] text-orange-800 leading-relaxed font-medium">
                 L'employé doit avoir un compte utilisateur existant. Son accès au back-office dépendra du rôle qui lui a été attribué (Waitstaff, Kitchen, etc.).
               </p>
             </div>
@@ -885,7 +885,7 @@ export function HRPage() {
 
 function StatCard({ label, value, icon: Icon, color }: any) {
   const colorClasses: any = {
-    blue: "bg-blue-50 text-blue-600 border-blue-100",
+    orange: "bg-orange-50 text-orange-600 border-orange-100",
     emerald: "bg-emerald-50 text-emerald-600 border-emerald-100",
     orange: "bg-orange-50 text-orange-600 border-orange-100",
     purple: "bg-purple-50 text-purple-600 border-purple-100",

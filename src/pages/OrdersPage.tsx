@@ -35,7 +35,7 @@ type OrderStatus = 'PENDING' | 'CONFIRMED' | 'PREPARING' | 'READY' | 'SERVED' | 
 
 const statusConfig: Record<OrderStatus, { key: string; color: string; badge: string }> = {
   PENDING: { key: 'orders.status.pending', color: 'text-amber-600', badge: 'bg-amber-50 border-amber-200 text-amber-700' },
-  CONFIRMED: { key: 'orders.status.confirmed', color: 'text-blue-600', badge: 'bg-blue-50 border-blue-200 text-blue-700' },
+  CONFIRMED: { key: 'orders.status.confirmed', color: 'text-orange-600', badge: 'bg-orange-50 border-orange-200 text-orange-700' },
   PREPARING: { key: 'orders.status.preparing', color: 'text-orange-600', badge: 'bg-orange-50 border-orange-200 text-orange-700' },
   READY: { key: 'orders.status.ready', color: 'text-emerald-600', badge: 'bg-emerald-50 border-emerald-200 text-emerald-700' },
   SERVED: { key: 'orders.status.served', color: 'text-slate-600', badge: 'bg-slate-50 border-slate-200 text-slate-700' },
@@ -1078,7 +1078,7 @@ function NextStatusButton({
   const isPharma = businessConfig.type === 'PHARMACY';
 
   const configMap = {
-    PENDING: { action: 'validate', label: isPharma ? 'Vérifier Ordo.' : t('orders_page.actions_labels.validate'), icon: CheckCircle2, color: 'bg-blue-600' },
+    PENDING: { action: 'validate', label: isPharma ? 'Vérifier Ordo.' : t('orders_page.actions_labels.validate'), icon: CheckCircle2, color: 'bg-orange-600' },
     CONFIRMED: { 
       action: 'prepare', 
       label: isPharma ? 'Préparer Lots' : (isResto ? t('orders_page.actions_labels.prepare') : 'Préparer Colis'), 
@@ -1086,7 +1086,7 @@ function NextStatusButton({
       color: 'bg-orange-600' 
     },
     PREPARING: { action: 'ready', label: t('orders_page.actions_labels.ready'), icon: UtensilsCrossed, color: 'bg-emerald-600' },
-    READY: { action: 'serve', label: isPharma ? 'Dispenser' : (isResto ? t('orders_page.actions_labels.serve') : 'Expédier'), icon: Truck, color: 'bg-indigo-600' },
+    READY: { action: 'serve', label: isPharma ? 'Dispenser' : (isResto ? t('orders_page.actions_labels.serve') : 'Expédier'), icon: Truck, color: 'bg-orange-600' },
     SERVED: { action: 'bill', label: t('orders_page.actions_labels.bill'), icon: CreditCard, color: 'bg-purple-600' },
   } as const;
 

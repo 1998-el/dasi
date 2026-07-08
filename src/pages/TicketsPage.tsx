@@ -175,7 +175,7 @@ export function TicketsPage() {
       {/* Stats rapides */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         {[
-          { label: "Total Émis", value: stats?.total ?? 0, icon: FileText, color: "text-blue-600", bg: "bg-blue-50" },
+          { label: "Total Émis", value: stats?.total ?? 0, icon: FileText, color: "text-orange-600", bg: "bg-orange-50" },
           { label: "Tickets du jour", value: stats?.today ?? 0, icon: Calendar, color: "text-orange-600", bg: "bg-orange-50" },
           { label: "Total Impressions", value: stats?.totalPrints ?? 0, icon: Printer, color: "text-emerald-600", bg: "bg-emerald-50" },
         ].map((s, i) => (
@@ -264,7 +264,7 @@ export function TicketsPage() {
                         </button>
                         <button 
                           onClick={() => handleDownload(ticket)}
-                          className="p-1.5 text-slate-400 hover:text-blue-600 transition-colors rounded-sm hover:bg-blue-50"
+                          className="p-1.5 text-slate-400 hover:text-orange-600 transition-colors rounded-sm hover:bg-orange-50"
                           title="Exporter PDF"
                         >
                           <Download className="h-4 w-4" />

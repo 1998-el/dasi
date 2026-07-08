@@ -34,21 +34,21 @@ export function Topbar({ toggleSidebar }: TopbarProps) {
   const hasUnreadNotifications = true
 
   return (
-    <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-30">
+    <header className="h-16 bg-topbar-bg border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-30">
       
       {/* Partie Gauche : Mobile Toggle & Contexte Établissement */}
       <div className="flex items-center gap-4">
         <button 
           onClick={toggleSidebar}
-          className="p-2 rounded-sm text-slate-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-colors"
+          className="p-2 rounded-sm text-[#333333] hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-colors"
           aria-label="Toggle Sidebar"
         >
           <Menu className="h-5 w-5" />
         </button>
 
         {/* Sélecteur d'établissement (Sobre & Pro) */}
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700">
-          <Store className="h-4 w-4 text-slate-500 rounded-sm" />
+        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-[#333333]">
+          <Store className="h-4 w-4 text-[#333333] rounded-sm" />
           <span className="text-xs font-semibold tracking-wide">{tenantName || 'Mon Établissement'}</span>
           {/* <ChevronDown className="h-3 w-3 text-slate-400 ml-1" /> */}
         </div>
@@ -64,7 +64,7 @@ export function Topbar({ toggleSidebar }: TopbarProps) {
             "p-2 rounded-sm transition-all focus:outline-none",
             isNoteOpen 
               ? "text-orange-600 bg-orange-50 shadow-inner ring-1 ring-orange-200" 
-              : "text-slate-500 hover:text-orange-600 hover:bg-orange-50"
+              : "text-[#333333] hover:text-orange-600 hover:bg-orange-50"
           )}
         >
           <StickyNote className="h-4 w-4" />
@@ -78,7 +78,7 @@ export function Topbar({ toggleSidebar }: TopbarProps) {
           disabled={isChangingLanguage}
           className={cn(
             "flex items-center gap-1.5 p-2 rounded-sm transition-all focus:outline-none min-w-[48px] justify-center",
-            isChangingLanguage ? "opacity-70 cursor-wait" : "text-slate-500 hover:text-orange-600 hover:bg-orange-50"
+            isChangingLanguage ? "opacity-70 cursor-wait" : "text-[#333333] hover:text-orange-600 hover:bg-orange-50"
           )}
           title={i18n.language === 'fr' ? 'Switch to English' : 'Passer en Français'}
         >
@@ -92,7 +92,7 @@ export function Topbar({ toggleSidebar }: TopbarProps) {
         
         {/* Bouton Notifications */}
         <button 
-          className="relative p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-50 rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500/20"
+          className="relative p-2 text-[#333333] hover:text-[#333333] hover:bg-slate-50 rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500/20"
           aria-label="Voir les notifications"
         >
           <Bell className="h-5 w-5" />
@@ -111,16 +111,16 @@ export function Topbar({ toggleSidebar }: TopbarProps) {
             className="flex items-center gap-3 pl-1 focus:outline-none group"
           >
             <div className="flex flex-col text-right hidden sm:flex">
-              <span className="text-sm font-semibold text-slate-900 leading-none mb-1 group-hover:text-orange-600 transition-colors">
+              <span className="text-sm font-semibold text-[#333333] leading-none mb-1 group-hover:text-orange-600 transition-colors">
                 {user?.name ?? 'Utilisateur'}
               </span>
-              <span className="text-[11px] font-medium text-orange-600 bg-orange-50 px-2 py-0.5 rounded-sm self-end">
+              <span className="text-[11px] font-medium text-[#333333] bg-orange-50 px-2 py-0.5 rounded-sm self-end">
                 {user?.role ? roleLabels[user.role] ?? user.role : 'Invité'}
               </span>
             </div>
 
             {/* Avatar (Initials) */}
-            <div className="h-9 w-9 rounded-sm bg-gray-500 text-white flex items-center justify-center text-xs font-bold tracking-wider border border-slate-800 transition-transform active:scale-95">
+            <div className="h-9 w-9 rounded-sm bg-slate-200 text-[#333333] flex items-center justify-center text-xs font-bold tracking-wider border border-slate-300 transition-transform active:scale-95">
               {user?.name ? user.name.split(' ').map(n => n[0]).join('') : 'U'}
             </div>
           </button>
@@ -130,12 +130,12 @@ export function Topbar({ toggleSidebar }: TopbarProps) {
             <>
               <div className="fixed inset-0 z-40" onClick={() => setIsProfileOpen(false)} />
               <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-sm py-1 z-50 animate-in fade-in zoom-in duration-100 origin-top-right">
-                <button className="w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2 transition-colors">
-                  <User className="h-4 w-4 text-slate-400" />
+                <button className="w-full px-4 py-2 text-sm text-[#333333] hover:bg-slate-50 flex items-center gap-2 transition-colors">
+                  <User className="h-4 w-4 text-[#333333]" />
                   {t('common.details', 'Mon Profil')}
                 </button>
-                <button className="w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2 transition-colors">
-                  <Settings className="h-4 w-4 text-slate-400" />
+                <button className="w-full px-4 py-2 text-sm text-[#333333] hover:bg-slate-50 flex items-center gap-2 transition-colors">
+                  <Settings className="h-4 w-4 text-[#333333]" />
                   {t('sidebar.settings', 'Paramètres')}
                 </button>
                 <div className="h-px bg-slate-100 my-1" />

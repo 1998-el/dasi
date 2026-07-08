@@ -52,7 +52,7 @@ export const BUSINESS_CONFIGS: Record<BusinessType, BusinessConfig> = {
       unit: "Rayon",
     },
     features: { hasTables: false, hasKitchen: false, hasInventory: true, hasPrescriptions: false, hasBatches: false, hasBarcodes: true },
-    theme: { primary: "blue-600", accent: "blue-50" }
+    theme: { primary: "orange-600", accent: "orange-50" }
   },
   PHARMACY: {
     type: 'PHARMACY',

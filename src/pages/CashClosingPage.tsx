@@ -127,7 +127,7 @@ export function CashClosingPage() {
           <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
              <CardHeader className="border-b border-slate-50 bg-slate-50/30">
                 <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest flex items-center gap-2">
-                  <History className="h-4 w-4 text-blue-500" />
+                  <History className="h-4 w-4 text-orange-500" />
                   Dernières clôtures
                 </CardTitle>
              </CardHeader>

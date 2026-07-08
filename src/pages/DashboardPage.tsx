@@ -54,7 +54,7 @@ interface RecentOrder {
 
 const statusLabels: Record<string, { key: string; color: string }> = {
   PENDING: { key: 'orders.status.pending', color: 'bg-amber-100 text-amber-700' },
-  CONFIRMED: { key: 'orders.status.confirmed', color: 'bg-blue-100 text-blue-700' },
+  CONFIRMED: { key: 'orders.status.confirmed', color: 'bg-orange-100 text-orange-700' },
   PREPARING: { key: 'orders.status.preparing', color: 'bg-orange-100 text-orange-700' },
   READY: { key: 'orders.status.ready', color: 'bg-emerald-100 text-emerald-700' },
   SERVED: { key: 'orders.status.served', color: 'bg-slate-100 text-slate-700' },
@@ -157,8 +157,8 @@ export function DashboardPage() {
       trend: businessConfig.type === 'RESTAURANT' ? t('dashboard.trends.capacity') : "Stable",
       trendType: "neutral",
       icon: businessConfig.type === 'RESTAURANT' ? Layers : Package,
-      color: businessConfig.type === 'RESTAURANT' ? "text-blue-600" : "text-indigo-600",
-      bgColor: businessConfig.type === 'RESTAURANT' ? "bg-blue-50" : "bg-indigo-50"
+      color: businessConfig.type === 'RESTAURANT' ? "text-orange-600" : "text-orange-600",
+      bgColor: businessConfig.type === 'RESTAURANT' ? "bg-orange-50" : "bg-orange-50"
     },
     {
       title: businessConfig.type === 'PHARMACY' ? "Ordonnances" : t('dashboard.sales_revenue'), 
@@ -273,10 +273,10 @@ export function DashboardPage() {
 
 
       {/* Info Banner — carte héro businessType-aware */}
-      <div className="relative mb-8 overflow-hidden rounded-sm border border-[#10367d]/10 bg-gradient-to-br from-[#10367d] to-[#0c2a63] text-white shadow-[0_18px_40px_-18px_rgba(16,54,125,0.65)]">
+      <div className="relative mb-8 overflow-hidden rounded-sm border border-[#1f69e0]/10 bg-gradient-to-br from-[#1f69e0] to-[#1954b8] text-white ">
         {/* Halos décoratifs */}
         <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -left-10 h-52 w-52 rounded-full bg-[#3f7fc4]/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-10 h-52 w-52 rounded-full bg-[#5a87df]/20 blur-3xl" />
 
         <div className="relative z-10 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
           {/* Identité + statut */}

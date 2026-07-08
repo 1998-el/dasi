@@ -44,7 +44,7 @@ interface DashboardAiResponse {
 }
 
 const severityColors = {
-  info: 'bg-blue-50 border-blue-100 text-blue-700',
+  info: 'bg-orange-50 border-orange-100 text-orange-700',
   success: 'bg-emerald-50 border-emerald-100 text-emerald-700',
   warning: 'bg-[#F2F2F7] border-[#E5E5EA] text-[#48484A]',
   danger: 'bg-red-50 border-red-100 text-red-700',
@@ -174,7 +174,7 @@ export function AiInsightsDisplay({ periodDays = 30 }) {
             <CardContent className="p-6 space-y-3">
               <p className="text-sm text-slate-700">{highlight.message}</p>
               {highlight.action && (
-                <p className="text-xs text-blue-600 font-medium flex items-center gap-2">
+                <p className="text-xs text-orange-600 font-medium flex items-center gap-2">
                   <Lightbulb className="h-4 w-4" />
                   {highlight.action}
                 </p>
@@ -189,7 +189,7 @@ export function AiInsightsDisplay({ periodDays = 30 }) {
         <Card className="rounded-sm border-slate-200 shadow-none">
           <CardHeader className="border-b border-slate-100 bg-slate-50/30 px-4">
             <CardTitle className="text-sm font-bold flex items-center gap-2 text-slate-700">
-              <Lightbulb className="h-4 w-4 text-blue-600" />
+              <Lightbulb className="h-4 w-4 text-orange-600" />
               {t('ai_analysis.recommendations_title', 'Recommandations')}
             </CardTitle>
           </CardHeader>

@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
-import { useMemo } from 'react'; 
+import { useMemo, useState, useRef, useEffect } from 'react'; 
 import { cn } from '../lib/utils'
-import { LogOut, X, Calculator, FileText } from 'lucide-react'
+import { LogOut, X, Calculator, FileText, MoreHorizontal } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useTranslation } from 'react-i18next'
 import { getSidebarItems } from '../config/business-ui'
@@ -49,14 +49,54 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
     return items;
   }, [rawMenuItems, businessConfig.type]);
 
+  // État pour le menu overflow (trois points)
+  const [isOverflowOpen, setIsOverflowOpen] = useState(false);
+  const overflowRef = useRef<HTMLDivElement>(null);
+  const overflowButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Gestion du clic extérieur pour fermer le menu
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        overflowRef.current && 
+        !overflowRef.current.contains(event.target as Node) &&
+        overflowButtonRef.current &&
+        !overflowButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsOverflowOpen(false);
+      }
+    }
+    if (isOverflowOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOverflowOpen]);
+
+  // Gestion de la touche Échap pour fermer le menu
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsOverflowOpen(false);
+      }
+    }
+    if (isOverflowOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOverflowOpen]);
+
+  // Déterminer si on dépasse 9 éléments
+  const hasOverflow = !isCollapsed && mainMenuItems.length > 9;
+  const visibleItems = hasOverflow ? mainMenuItems.slice(0, 9) : mainMenuItems;
+  const overflowItems = hasOverflow ? mainMenuItems.slice(9) : [];
 
   return (
     <>
       {/* VERSION DESKTOP : Sidebar classique (visible uniquement sur large écran) */}
       <aside className={cn(
-        "hidden lg:flex h-screen bg-white text-slate-700 flex-col shadow-inner border-r border-slate-200 transition-all duration-300 ease-in-out relative",
-        isCollapsed ? "w-20" : "w-60"
-      )}>
+         "hidden lg:flex h-screen bg-sidebar-bg text-[#333333] flex-col shadow-inner border-r border-slate-200 transition-all duration-300 ease-in-out relative",
+         isCollapsed ? "w-20" : "w-60"
+       )}>
 
       {/* Brand / Header */}
       <div className={cn(
@@ -70,7 +110,6 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
             className={cn("w-auto object-contain transition-all", isCollapsed ? "h-12" : "h-22")}
           />
         </div>
-       
       </div>
 
       {/* Navigation */}
@@ -78,18 +117,16 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
         "flex-1 py-6 overflow-y-auto overflow-x-hidden",
         isCollapsed ? "px-2" : "px-4"
       )}>
-        {/* Main Menu */}
         <div>
-        
           <ul className="space-y-1">
-            {mainMenuItems.map((item) => {
+            {/* Éléments visibles (max 9) */}
+            {visibleItems.map((item) => {
               const isActive = location.pathname === item.path
               return (
                 <li key={item.path}>
                   <Link
                     to={item.path}
                     onClick={() => {
-                      // On ne ferme/réduit la sidebar au clic que sur les petits écrans
                       if (window.innerWidth < 1024 && !isCollapsed) {
                         toggleSidebar();
                       }
@@ -98,67 +135,90 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
                       "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
                       "focus:outline-none focus:ring-2 focus:ring-orange-500/40",
                       isActive
-                        ? "bg-orange-600 text-white shadow-sm"
-                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+                         ? "bg-orange-600 text-white shadow-sm"
+                         : "text-[#333333] hover:bg-slate-100 hover:text-[#333333]",
                       isCollapsed && "justify-center px-0 h-10"
                     )}
-                    title={isCollapsed ? item.i18nKey : undefined}
+                    title={isCollapsed ? t(item.i18nKey ?? '', { defaultValue: item.key }) : undefined}
                   >
                     <item.icon className={cn(
                       "h-4 w-4 shrink-0 transition-colors",
-                      isActive ? "text-white" : "text-slate-500"
+                      isActive ? "text-white" : "text-[#333333]"
                     )} />
                     {!isCollapsed && (
                       <span className="animate-in fade-in slide-in-from-left-2 duration-300">
                         {t(item.i18nKey ?? '', { defaultValue: item.key })}
                       </span>
                     )}
-
                   </Link>
                 </li>
               )
             })}
+
+            {/* BOUTON "..." (trois points) - visible uniquement si > 9 éléments et sidebar dépliée */}
+            {hasOverflow && !isCollapsed && (
+              <li className="relative">
+                <button
+                  ref={overflowButtonRef}
+                  onClick={() => setIsOverflowOpen(!isOverflowOpen)}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 w-full text-left",
+                    "text-[#333333] hover:bg-slate-100 hover:text-[#333333]",
+                    "focus:outline-none focus:ring-2 focus:ring-orange-500/40",
+                    isOverflowOpen && "bg-slate-100"
+                  )}
+                  aria-expanded={isOverflowOpen}
+                  aria-haspopup="true"
+                >
+                  <MoreHorizontal className="h-4 w-4 shrink-0" />
+                  <span className="animate-in fade-in slide-in-from-left-2 duration-300">
+                    {t('sidebar.more', { defaultValue: 'Plus' })}
+                  </span>
+                </button>
+
+                {/* MENU FLOTTANT (type dropdown) */}
+                {isOverflowOpen && (
+                  <div 
+                    ref={overflowRef}
+                    className="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg z-50 overflow-hidden animate-in slide-in-from-top-2 fade-in duration-200"
+                    role="menu"
+                    aria-orientation="vertical"
+                  >
+                    <ul className="py-1 max-h-80 overflow-y-auto">
+                      {overflowItems.map((item) => {
+                        const isActive = location.pathname === item.path
+                        return (
+                          <li key={item.path} role="none">
+                            <Link
+                              to={item.path}
+                              onClick={() => {
+                                setIsOverflowOpen(false);
+                                if (window.innerWidth < 1024 && !isCollapsed) {
+                                  toggleSidebar();
+                                }
+                              }}
+                              className={cn(
+                                "flex items-center gap-3 px-4 py-2.5 text-sm transition-all duration-150",
+                                "hover:bg-slate-50",
+                                isActive
+                                  ? "bg-orange-50 text-orange-700 font-medium"
+                                  : "text-[#333333]"
+                              )}
+                              role="menuitem"
+                            >
+                              <item.icon className="h-4 w-4 shrink-0" />
+                              <span>{t(item.i18nKey ?? '', { defaultValue: item.key })}</span>
+                            </Link>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </li>
+            )}
           </ul>
         </div>
-
-        {/* Configuration Section */}
-        {/* <div className="mt-6">
-          {!isCollapsed && (
-            <p className="px-4 text-[10px] font-black uppercase tracking-[0.15em] text-slate-300 mb-4 animate-in fade-in">
-              {t('sidebar.configuration')}
-            </p>
-          )}
-          <ul className="space-y-1">
-            <li>
-              <Link
-                to="/settings"
-                onClick={() => {
-                  if (window.innerWidth < 1024 && !isCollapsed) {
-                    toggleSidebar();
-                  }
-                }}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
-                  location.pathname === '/settings'
-                    ? "bg-orange-600 text-white shadow-sm"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
-                  isCollapsed && "justify-center px-0"
-                )}
-                title={isCollapsed ? "Paramètres" : undefined}
-              >
-                <Settings className={cn(
-                  "h-4 w-4 shrink-0",
-                  location.pathname === '/settings' ? "text-white" : "text-slate-500"
-                )} />
-                {!isCollapsed && (
-                  <span className="animate-in fade-in slide-in-from-left-2 duration-300">
-                    {t('sidebar.settings')}
-                  </span>
-                )}
-              </Link>
-            </li>
-          </ul>
-        </div> */}
       </nav>
 
       {/* Footer / Logout */}
@@ -166,12 +226,11 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
         <button
           onClick={logout}
           className={cn(
-            "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium w-full text-left",
-            "text-slate-600 hover:text-red-600 hover:bg-red-50 transition-all duration-150",
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium w-full text-left text-[#333333] hover:text-red-600 hover:bg-red-50 transition-all duration-150",
             "focus:outline-none focus:ring-2 focus:ring-red-500/30",
             isCollapsed && "justify-center px-0"
           )}
-          title={isCollapsed ? "Déconnexion" : undefined}
+          title={isCollapsed ? t('sidebar.logout') : undefined}
         >
           <LogOut className="h-4 w-4 shrink-0" />
           {!isCollapsed && (
@@ -197,7 +256,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
             </button>
           </div>
 
-          {/* Grille de Tuiles (Windows 8 Style) */}
+          {/* Grille de Tuiles (Windows 8 Style) - tous les éléments visibles */}  
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-2xl mx-auto w-full pb-10">
             {mainMenuItems.map((item) => {
               const isActive = location.pathname === item.path

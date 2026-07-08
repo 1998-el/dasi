@@ -65,7 +65,7 @@ interface PurchaseStats {
 
 // Configuration visuelle des statuts
 const statusConfig: Record<PurchaseStatus, { labelKey: string; badge: string }> = {
-  ORDERED: { labelKey: 'purchases.status.ORDERED', badge: 'bg-blue-50 border-blue-200 text-blue-700' },
+  ORDERED: { labelKey: 'purchases.status.ORDERED', badge: 'bg-orange-50 border-orange-200 text-orange-700' },
   RECEIVED: { labelKey: 'purchases.status.RECEIVED', badge: 'bg-emerald-50 border-emerald-200 text-emerald-700' },
   CANCELLED: { labelKey: 'purchases.status.CANCELLED', badge: 'bg-red-50 border-red-200 text-red-700' },
 };
@@ -357,7 +357,7 @@ export function PurchasesPage() {
           <div className="bg-white p-4 rounded-sm border border-slate-200">
             <div className="flex justify-between items-start mb-2">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('purchases.total_purchases')}</span>
-              <div className="p-1.5 rounded-sm bg-blue-50 text-blue-600">
+              <div className="p-1.5 rounded-sm bg-orange-50 text-orange-600">
                 <ShoppingCart className="h-3.5 w-3.5" />
               </div>
             </div>

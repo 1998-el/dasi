@@ -41,19 +41,19 @@ export function MembersPage() {
       return [
         ...base,
         { value: 'PHARMACIST', label: 'Pharmacien', color: 'text-emerald-600 bg-emerald-50 border-emerald-100' },
-        { value: 'ASSISTANT', label: 'Préparateur', color: 'text-blue-600 bg-blue-50 border-blue-100' },
+        { value: 'ASSISTANT', label: 'Préparateur', color: 'text-orange-600 bg-orange-50 border-orange-100' },
       ];
     }
     if (businessConfig.type === 'RETAIL') {
       return [
         ...base,
-        { value: 'SALES', label: 'Vendeur / Conseil', color: 'text-blue-600 bg-blue-50 border-blue-100' },
+        { value: 'SALES', label: 'Vendeur / Conseil', color: 'text-orange-600 bg-orange-50 border-orange-100' },
         { value: 'CASHIER', label: 'Caissier', color: 'text-emerald-600 bg-emerald-50 border-emerald-100' },
       ];
     }
     return [
       ...base,
-      { value: 'WAITER', label: 'Serveur / Salle', color: 'text-blue-600 bg-blue-50 border-blue-100' },
+      { value: 'WAITER', label: 'Serveur / Salle', color: 'text-orange-600 bg-orange-50 border-orange-100' },
       { value: 'COOK', label: 'Cuisine', color: 'text-orange-600 bg-orange-50 border-orange-100' },
     ];
   }, [businessConfig.type]);
@@ -207,7 +207,7 @@ export function MembersPage() {
                           </div>
                           <span className="font-bold text-slate-900 flex items-center gap-1.5 whitespace-nowrap">
                             {member.firstName} {member.lastName}
-                            {member.role === 'ADMIN' && <BadgeCheck className="h-3.5 w-3.5 text-blue-500" />}
+                            {member.role === 'ADMIN' && <BadgeCheck className="h-3.5 w-3.5 text-orange-500" />}
                           </span>
                         </div>
                       </td>

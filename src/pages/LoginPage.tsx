@@ -110,7 +110,7 @@ export function LoginPage() {
 
             {/* Message d'information (ex: après redirection du register) */}
             {location.state?.info && !authError && (
-              <div className="p-3 bg-blue-50 border border-blue-200 text-blue-700 rounded-sm flex items-start gap-2.5 text-xs font-medium">
+              <div className="p-3 bg-orange-50 border border-orange-200 text-orange-700 rounded-sm flex items-start gap-2.5 text-xs font-medium">
                 <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
                 <span>{location.state.info}</span>
               </div>

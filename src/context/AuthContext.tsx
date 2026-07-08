@@ -349,9 +349,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const root = document.documentElement;
     const colorMap: Record<string, string> = {
-      'RESTAURANT': '#10367d', // blue #10367d (was orange-600)
-      'RETAIL': '#2563eb',     // blue-600
-      'PHARMACY': '#059669',   // emerald-600
+      'RESTAURANT': '#1f69e0',
+      'RETAIL': '#1f69e0',
+      'PHARMACY': '#059669',
     };
     root.style.setProperty('--primary-business', colorMap[businessType]);
   }, [businessType]);

@@ -251,7 +251,8 @@ export function OrdersPage() {
       const normalizedData = (dataRows as any[] || []).map(item => ({
         ...item,
         orderNumber: item.orderNumber || item.saleNumber || item.dispenseNumber || item.cartNumber || item.id?.slice(-6),
-        // Alignement des statuts de vente (PAID) sur les badges de commande (COMPLETED)
+        customerName: item.customer?.name || item.customerName, // <-- AJOUT : On extrait le nom du client
+        // Alignement des statuts de vente (PAID) sur les badges de commande (COMPLETED) pour l'affichage
         status: item.status === 'PAID' ? 'COMPLETED' : item.status
       }));
 
@@ -335,6 +336,7 @@ export function OrdersPage() {
           totalAmount: total,
           paymentMethod: formData.paymentMethod,
           customerId: formData.customerId || undefined,
+          customerName: formData.customerName || undefined,
           items,
           applyTax
         });

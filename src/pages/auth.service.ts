@@ -411,7 +411,7 @@ class AuthService {
     return profile;
   }
 
-  async updateProfile(data: { firstName?: string; lastName?: string; phone?: string; avatar?: string }) {
+  async updateProfile(data: { firstName?: string; lastName?: string; email?: string; phone?: string; avatar?: string }) {
     return this.request<any>('PUT', AUTH_ENDPOINTS.PROFILE, data);
   }
 

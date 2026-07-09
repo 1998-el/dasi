@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { CountryDialModal } from '../components/CountryDialModal'
 import { cn } from '../lib/utils'
+import { AuthCommercialPanel } from '../components/AuthCommercialPanel'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
@@ -383,30 +384,7 @@ type Country = { code: string; dial: string; name: string }
           {toast && <Toast toast={toast} />}
         </div>
     
-      <div className='hidden lg:flex lg:w-7/12 bg-slate-900 flex-col justify-between p-12 relative overflow-hidden border-r border-slate-800'  style={{ backgroundImage: "url('public/logo/login.jpg')" }}>
-      <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('public/logo/login.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-slate-900/60" />
-        
-        {/* Center: Core Value Proposition */}
-    
-
-        {/* Bottom: Footer note */}
-        <div className="relative z-10 text-xs text-slate-300 flex items-center justify-between">
-          © {new Date().getFullYear()} Maatics Food. Tous droits réservés.
-            {/* Lien de retour à la connexion avec flèche */}
-          <Link 
-            to="/login" 
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-orange-600 transition-colors  group"
-          >
-            <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-            Retour à la connexion
-          </Link>
-        </div>
-        
-        </div>
+      <AuthCommercialPanel backLink={{ to: '/login', label: 'Retour à la connexion' }} />
         
 
 

@@ -11,6 +11,7 @@ import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
 import { Card, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-react'
+import { AuthCommercialPanel } from '../components/AuthCommercialPanel'
 
 const loginSchema = yup.object({
   email: yup.string().email('Adresse email invalide').required('L\'email est requis'),
@@ -57,22 +58,7 @@ export function LoginPage() {
     <div className="flex h-screen w-full bg-slate-50">
       
       {/* Panneau Gauche : Identité Visuelle & Réassurance (Masqué sur mobile) */}
-      <div className="hidden lg:flex lg:w-7/12 bg-slate-900 flex-col justify-between p-12 relative overflow-hidden border-r border-slate-800">
-        {/* Background Image & Overlay */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('public/logo/login.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-slate-900/60" />
-        
-        {/* Center: Core Value Proposition */}
-    
-
-        {/* Bottom: Footer note */}
-        <div className="relative z-10 text-xs text-slate-300">
-          © {new Date().getFullYear()} Maatics Food. Tous droits réservés.
-        </div>
-      </div>
+      <AuthCommercialPanel />
 
       {/* Panneau Droit : Formulaire de Connexion */}
       <div className="w-full lg:w-5/12 flex items-center justify-center p-6 sm:p-12">

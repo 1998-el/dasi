@@ -29,7 +29,7 @@
     "members": "Members",
     "analysis_support": "Analysis & Support",
     "ai_analysis": "AI Analysis",
-    "hr": "HR",
+    "hr": "Human Resources",
     "configuration": "Configuration",
     "settings": "Settings",
     "logout": "Logout"
@@ -332,5 +332,9 @@
     "total": "Total to pay",
     "print_ticket": "Print my ticket",
     "downloading_ticket": "Generating ticket..."
+  },
+  "ai_analysis": {
+    "overview_title": "AI Summary",
+    "recommendations_title": "Recommendations"
   }
 }

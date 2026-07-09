@@ -33,7 +33,7 @@
     "cash_closing": "Clôture de caisse",
     "analysis_support": "Analyse & Support",
     "ai_analysis": "AI Analyse",
-    "hr": "RH",
+    "hr": "Ressources Humaines",
     "configuration": "Configuration",
     "settings": "Paramètres",
     "logout": "Déconnexion"
@@ -419,5 +419,10 @@
     },
     "export_pdf": "Exporter PDF",
     "export_excel": "Exporter Excel"
+  }
+,
+  "ai_analysis": {
+    "overview_title": "Synthèse IA",
+    "recommendations_title": "Recommandations"
   }
 }

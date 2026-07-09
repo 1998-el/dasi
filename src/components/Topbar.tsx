@@ -1,18 +1,21 @@
 import { useState } from 'react'
-import { Menu, Bell, Store, ChevronDown, User, Settings, LogOut, Globe, StickyNote, Loader2 } from 'lucide-react'
+import { Menu, Bell, Store, ChevronDown, User, Settings, LogOut, Globe, StickyNote, Loader2, MessageSquare } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { FloatingNote } from './FloatingNote'
 import { cn } from '../lib/utils'
 
 interface TopbarProps {
   toggleSidebar: () => void
+  toggleChat?: () => void
 }
 
-export function Topbar({ toggleSidebar }: TopbarProps) {
+export function Topbar({ toggleSidebar, toggleChat }: TopbarProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const { user, logout, tenantName } = useAuth()
   const { i18n, t } = useTranslation()
+  const navigate = useNavigate()
   const [isNoteOpen, setIsNoteOpen] = useState(false)
   const [isChangingLanguage, setIsChangingLanguage] = useState(false)
 
@@ -56,6 +59,20 @@ export function Topbar({ toggleSidebar }: TopbarProps) {
 
       {/* Partie Droite : Actions, Notifications & Profil */}
       <div className="flex items-center gap-4">
+        
+        {/* Bouton Chat */}
+        {toggleChat && (
+          <>
+            <button 
+              onClick={toggleChat}
+              className="p-2 rounded-sm text-[#333333] hover:text-orange-600 hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500/20"
+              aria-label="Ouvrir le chat"
+            >
+              <MessageSquare className="h-4 w-4" />
+            </button>
+            <div className="h-6 w-px bg-slate-200" />
+          </>
+        )}
         
         {/* Bloc-notes Flottant */}
         <button 
@@ -134,7 +151,10 @@ export function Topbar({ toggleSidebar }: TopbarProps) {
                   <User className="h-4 w-4 text-[#333333]" />
                   {t('common.details', 'Mon Profil')}
                 </button>
-                <button className="w-full px-4 py-2 text-sm text-[#333333] hover:bg-slate-50 flex items-center gap-2 transition-colors">
+                 <button 
+                  onClick={() => { setIsProfileOpen(false); navigate('/settings') }}
+                  className="w-full px-4 py-2 text-sm text-[#333333] hover:bg-slate-50 flex items-center gap-2 transition-colors"
+                >
                   <Settings className="h-4 w-4 text-[#333333]" />
                   {t('sidebar.settings', 'Paramètres')}
                 </button>

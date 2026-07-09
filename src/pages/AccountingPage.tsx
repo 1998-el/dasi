@@ -35,17 +35,34 @@ export function AccountingPage() {
   const [pnlData, setPnlData] = useState<any[]>([])
   const [expenseBreakdown, setExpenseBreakdown] = useState<any[]>([])
   const [balanceData, setBalanceData] = useState<any>(null)
+  const [pnlSummary, setPnlSummary] = useState<any>(null) // Ajout pour stocker le résumé P&L
   const [journalData, setJournalData] = useState<any[]>([])
   const [reportHistory, setReportHistory] = useState<any[]>([])
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
 
   const loadData = useCallback(async () => {
+    // Créer une map des libellés de comptes pour enrichir les autres vues
+    const accountLabels = new Map<string, string>();
+    try {
+      const balanceForLabels = await authService.getAccountingBalance();
+      (balanceForLabels?.accounts || []).forEach((acc: any) => {
+        if (acc.accountCode && acc.label) {
+          accountLabels.set(acc.accountCode, acc.label);
+        }
+      });
+    } catch (e) {
+      console.warn("Impossible de pré-charger les libellés de comptes", e);
+    }
+
     setIsLoading(true)
     try {
       if (activeTab === 'pnl') {
         // On passe la date sélectionnée (ou le premier du mois) pour filtrer les écritures
         const data = await authService.getAccountingPnL(selectedDate)
-        setPnlData(data?.monthlyData || [])
+        // Normalisation pour Restaurant vs Retail
+        const monthly = (data?.monthlyData || []).map((d: any) => ({ ...d, revenue: d.revenue ?? d._sum?.amount ?? 0 }));
+        setPnlData(monthly)
+        setPnlSummary(data?.summary || null) // On stocke le résumé
         setExpenseBreakdown(data?.expenseBreakdown || [])
       } else if (activeTab === 'balance') {
         // Récupération de la balance à date
@@ -56,7 +73,12 @@ export function AccountingPage() {
         setReportHistory(Array.isArray(history) ? history : [])
       } else if (activeTab === 'journal') {
         const data = await authService.getAccountingJournal()
-        setJournalData(data || [])
+        // Enrichir les lignes du journal avec les libellés de comptes
+        const enrichedJournal = (data || []).map(entry => ({
+          ...entry,
+          lines: (entry.lines || []).map((line: any) => ({ ...line, label: accountLabels.get(line.accountCode) || 'Compte inconnu' }))
+        }));
+        setJournalData(enrichedJournal);
       }
     } catch (e: any) {
       showError(e.message || "Erreur de chargement des données comptables")
@@ -89,17 +111,20 @@ export function AccountingPage() {
 
   // Calcul des totaux simulés
   const totals = useMemo(() => {
-    const revenue = pnlData.reduce((acc, d) => acc + (d.revenue || 0), 0)
-    const expenses = pnlData.reduce((acc, d) => acc + (d.expenses || 0), 0)
-    const tax = pnlData.reduce((acc, d) => acc + (d.tax || 0), 0)
-    return {
-      revenue,
-      expenses,
-      grossMargin: revenue - (expenses * 0.6),
-      netProfit: revenue - expenses - tax,
-      tax
+    // On utilise directement le résumé du backend s'il est disponible
+    if (pnlSummary) {
+      return {
+        revenue: pnlSummary.revenues || 0,
+        expenses: pnlSummary.expenses || 0,
+        grossMargin: pnlSummary.margin || 0, // Utiliser la marge calculée par le backend
+        netProfit: pnlSummary.netIncome || 0,
+        tax: pnlSummary.tax || 0
+      }
     }
-  }, [pnlData])
+    return {
+      revenue: 0, expenses: 0, grossMargin: 0, netProfit: 0, tax: 0
+    }
+  }, [pnlSummary])
 
   if (isLoading && pnlData.length === 0 && !balanceData) {
     return (
@@ -302,8 +327,8 @@ export function AccountingPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-50">
                      {(balanceData?.accounts || []).length > 0 ? (balanceData.accounts || []).map((acc: any, idx: number) => (
-                       <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
-                          <td className="px-6 py-4 font-mono text-xs font-bold border-r border-slate-50">{acc.code}</td>
+                       <tr key={acc.accountCode || idx} className="hover:bg-slate-50/50 transition-colors">
+                          <td className="px-6 py-4 font-mono text-xs font-bold border-r border-slate-50">{acc.accountCode || acc.code}</td>
                           <td className="px-6 py-4 font-medium text-slate-700">{acc.label}</td>
                           <td className="px-6 py-4 text-right">{acc.debit.toLocaleString()} F</td>
                           <td className="px-6 py-4 text-right">{acc.credit.toLocaleString()} F</td>
@@ -354,7 +379,7 @@ export function AccountingPage() {
                              <p className="text-xs font-medium text-slate-700">{entry.description}</p>
                              <div className="mt-1 flex flex-wrap gap-1">
                                {(entry.lines || []).map((l: any, i: number) => (
-                                 <span key={i} className="text-[9px] font-mono text-slate-400 bg-slate-100 rounded px-1 py-0.5">
+                                 <span key={i} className="text-[9px] font-mono text-slate-400 bg-slate-100 rounded px-1 py-0.5" title={l.label}>
                                    {l.accountCode}
                                  </span>
                                ))}

@@ -60,7 +60,7 @@ export function CashClosingPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card className="lg:col-span-2 rounded-sm border-slate-200 shadow-none overflow-hidden">
-          <CardHeader className="border-b border-slate-50 bg-slate-50/30">
+          <CardHeader className="border-b border-slate-50 bg-slate-50/30 px-4">
             <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest flex items-center gap-2">
               <Calendar className="h-4 w-4 text-orange-500" />
               Sélection de la période
@@ -111,7 +111,7 @@ export function CashClosingPage() {
 
         <div className="space-y-6">
           <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
-            <CardHeader className="border-b border-slate-50 bg-slate-50/30">
+            <CardHeader className="border-b border-slate-50 bg-slate-50/30 px-4">
               <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-emerald-500" />
                 Conformité OHADA
@@ -125,7 +125,7 @@ export function CashClosingPage() {
           </Card>
 
           <Card className="rounded-sm border-slate-200 shadow-none overflow-hidden">
-             <CardHeader className="border-b border-slate-50 bg-slate-50/30">
+             <CardHeader className="border-b border-slate-50 bg-slate-50/30 px-4">
                 <CardTitle className="text-xs font-black uppercase text-slate-500 tracking-widest flex items-center gap-2">
                   <History className="h-4 w-4 text-orange-500" />
                   Dernières clôtures

@@ -21,7 +21,6 @@ import {
 import { cn } from '../lib/utils'
 import { useAuth } from '../context/AuthContext'
 import { authService } from './auth.service'
-import { FloatingChat } from '../components/FloatingChat'
 
 interface DashboardSummary {
   occupancyRate: number
@@ -459,8 +458,7 @@ export function DashboardPage() {
             </div>
           </div>
         </div>
-      )}
-      <FloatingChat />
-    </DashboardLayout>
-  )
-}
+       )}
+     </DashboardLayout>
+   )
+ }

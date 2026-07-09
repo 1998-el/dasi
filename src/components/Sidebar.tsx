@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useMemo, useState, useRef, useEffect } from 'react'; 
 import { cn } from '../lib/utils'
-import { LogOut, X, Calculator, FileText, MoreHorizontal } from 'lucide-react'
+import { LogOut, X, Calculator, FileText, MoreHorizontal, BrainCircuit } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useTranslation } from 'react-i18next'
 import { getSidebarItems } from '../config/business-ui'
@@ -28,7 +28,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
         path: '/accounting',
         icon: Calculator,
         i18nKey: 'sidebar.accounting',
-        key: 'Accounting'
+        key: 'accounting'
       });
     }
 
@@ -38,7 +38,17 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
         path: '/accounting/closing',
         icon: FileText,
         i18nKey: 'sidebar.cash_closing',
-        key: 'Z-Report'
+        key: 'cash_closing'
+      });
+    }
+
+    // Ajout du lien vers l'Analyse IA
+    if (!items.find(i => i.path === '/ai-analysis')) {
+      items.push({
+        path: '/ai-analysis',
+        icon: BrainCircuit,
+        i18nKey: 'sidebar.ai_analysis',
+        key: 'ai_analysis'
       });
     }
 
